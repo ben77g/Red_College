@@ -430,21 +430,6 @@ const SCHOOLS = [
   ]
 },
 {
-  id:"umich", name:"University of Michigan", place:"Ann Arbor, MI", country:"US",
-  platform:"Common App plus U-M essay responses", fee:"$75", feeUnv:true,
-  you:"As a US citizen you apply as a domestic applicant, with the domestic fee, no visa or international proof-of-funds rules, and eligibility for FAFSA and need-based aid. Because you live in California, you would pay the out-of-state (nonresident) rate at Michigan. Aid details were not confirmed on official pages.", youUnv:true,
-  tests:"Test-optional for 2027. AP/IB results are considered in context.",
-  docs:["Common App","FAFSA for financial aid (opened Oct 1; Early Decision aid deadline Nov 15, unconfirmed)","High-school transcript","Counselor and teacher recommendations (not confirmed)","School-specific extras (engineering, music and others) not confirmed"],
-  url:"https://admissions.umich.edu/apply/first-year-applicants/requirements-deadlines",
-  extra:"Official pages could not be read, so dates come from secondary pages and search snippets. Early Decision (binding) is new this cycle.",
-  deadlines:[
-    {l:"Early Decision and Early Action application", d:"2026-11-01", u:1},
-    {l:"Early Decision financial aid", d:"2026-11-15", u:1},
-    {l:"Early Decision commitment", d:"2027-01-06", u:1},
-    {l:"Regular Decision", d:"2027-02-01", u:1}
-  ]
-},
-{
   id:"ucla", name:"UCLA", place:"Los Angeles, CA", country:"US",
   platform:"UC application", fee:"$80 domestic fee per campus (reported by secondary sources; confirm on the UC application). Fee waivers are available.", feeUnv:true,
   you:"As a US citizen and California resident you apply as a domestic applicant, pay in-state tuition, and are eligible for FAFSA and need-based aid, including Cal Grant if you meet its requirements. The UC minimum GPA for California residents is 3.0 (the 3.4 figure is for nonresidents). Residency for tuition is decided by UC rules, which were not checked here.", youUnv:true,
@@ -765,13 +750,6 @@ const PREVET = {
       "The Canadian vet colleges have limited intake and residence-based preferences. WCVM favors Saskatchewan and western-province residents. A dual citizen may be eligible through its non-subsidized or international seats (unconfirmed; ask wcvm.admissions@usask.ca)."],
     unv:true, url:"https://you.ubc.ca/programs/applied-animal-biology/"
   },
-  umich:{
-    apply:"College of Literature, Science, and the Arts (LSA) with a biology or biomedical major. There is no pre-vet major.",
-    notes:["LSA Pre-Health Advising supports veterinary medicine and offers a Pre-Veterinary Medicine prerequisite checklist.",
-      "Suggested high school preparation for LSA: 4 years English, 3 science, 3 math, 2 of one world language (unconfirmed).",
-      "Nearest vet school is Michigan State (CVM). It requires prerequisites to be 100% complete before applying. No early-admission pathway to it was found."],
-    unv:true, url:"https://prod.lsa.umich.edu/prehealth/prepare/academics/prerequisite-checklists.html"
-  },
   ucla:{
     apply:"College of Letters & Science: any life sciences major, or apply as undeclared. Pre-vet is not a major.",
     notes:["Advising comes from the UCLA Life Sciences pre-health office and the Career Center. There is a student-run Pre-Veterinary Society.",
@@ -804,7 +782,6 @@ const BRAND = {
   mcgill:{abbr:"McG", bg:"#ed1b2f", fg:"#fff"},
   uoft:{abbr:"UofT", bg:"#1e3765", fg:"#fff"},
   ubc:{abbr:"UBC", bg:"#002145", fg:"#fff"},
-  umich:{abbr:"UM", bg:"#00274c", fg:"#ffcb05"},
   ucla:{abbr:"UCLA", bg:"#2774ae", fg:"#ffd100"},
   dal:{abbr:"Dal", bg:"#111111", fg:"#ffd200"},
   mcmaster:{abbr:"Mac", bg:"#7a003c", fg:"#fdbf57"},
@@ -820,7 +797,6 @@ const TASKS = {
   mcgill:["Create the McGill application account","Self-report grades 10 to 12 (opens Nov 15)","Decide whether to send SAT/ACT (optional)","Program extras if needed (CASPer, statement)","Submit application and fee (Jan 15)","Entrance scholarship application (Jan 21)","Submit supporting documents (Mar 1)","Gather Quebec resident tuition proof (Situation 8)","Choose the Macdonald Campus Life Sciences major (pre-vet route)"],
   uoft:["Create the OUAC account","Send SAT/AP scores if submitting (Engineering needs all scores)","Engineering profile or Music questionnaire if needed (Jan 15)","Architecture, Rotman or Computer Science supplemental if needed (Feb 1)","Submit OUAC application (Jan 15, or early by Nov 7)","Send documents (Dec 1 if early, otherwise by Jan 15 to Feb 1)","Residence application (Mar 31)","Choose Arts & Science, Life Sciences (pre-vet route)"],
   ubc:["Create the UBC application account","Write the personal profile essays","Submit application (Dec 1 for early and scholarships, Jan 15 final)","Send transcripts and documents","Accept offer and apply for housing (May 1)","Choose Land and Food Systems, Applied Animal Biology (pre-vet route)"],
-  umich:["Set up the Common App","Write the Michigan essays","Ask counselor and teachers for recommendations","Send transcript","Submit application (Nov 1 early, Feb 1 regular)","File the FAFSA","Choose LSA with a biology or biomedical major (pre-vet route)"],
   ucla:["Start the UC application","Write the Personal Insight Questions","Submit application by Nov 30","Supplemental application if needed (Arts, Music, Nursing, TFT)","File FAFSA and verify GPA for Cal Grant (Mar 2)","Send AP/IB scores (Jul 15) and final transcript (Jul 1)","Choose a life sciences major in Letters & Science (pre-vet route)"],
   dal:["Create the Dalhousie application","Send transcripts (early applicants can send junior-year grades)","Decide whether to send SAT/ACT (optional)","Apply for scholarships","Apply for residence (guarantee by May 1)","Choose the Truro Pre-Veterinary Medicine pathway or an Animal Science route (pre-vet route)"],
   mcmaster:["Create the OUAC account","Send the school profile and transcripts","Decide whether to send SAT/ACT (optional)","Health Sciences supplementary application if applying","Submit the application","Choose Life Sciences or another science route (pre-vet route)"],
@@ -894,7 +870,6 @@ const TARGETS = {
   mcgill:{d:"2027-01-15", l:"application deadline"},
   uoft:{d:"2027-01-15", l:"final application deadline"},
   ubc:{d:"2027-01-15", l:"final application deadline"},
-  umich:{d:"2027-02-01", l:"Regular Decision deadline (early rounds close Nov 1)"},
   ucla:{d:"2026-11-30", l:"UC application deadline"},
   dal:{d:"2027-03-15", l:"scholarship deadline (older cycle, unconfirmed)"},
   mcmaster:{d:"2027-01-15", l:"OUAC deadline (2025 cycle date, unconfirmed)"},

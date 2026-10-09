@@ -4,7 +4,7 @@ A static dashboard of first-year undergrad application deadlines and requirement
 Live site (GitHub Pages): https://deadlines.chickenkiller.com/ (custom domain via FreeDNS CNAME to ben77g.github.io; also https://ben77g.github.io/Red_College/)
 
 ## Current schools (Fall 2027 entry)
-McGill, University of Toronto (St. George), UBC Vancouver, University of Michigan, UCLA, plus (added 2026-10-09) Dalhousie, McMaster, Guelph, University of Alberta, UVic, University of Calgary and SFU. To add a school: add an object to `SCHOOLS`, and entries with the same id in `BRAND` (icon colors), `TARGETS` (progress bar date), `TASKS` (checklist) and `PREVET` (pre-vet box).
+McGill, University of Toronto (St. George), UBC Vancouver, UCLA, plus (added 2026-10-09) Dalhousie, McMaster, Guelph, University of Alberta, UVic, University of Calgary and SFU. To add a school: add an object to `SCHOOLS`, and entries with the same id in `BRAND` (icon colors), `TARGETS` (progress bar date), `TASKS` (checklist) and `PREVET` (pre-vet box).
 
 ## How it works
 - Everything is in one file, `index.html` (no build step, no dependencies).
@@ -24,14 +24,13 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 ## Applicant profile (updated 2026-10-09)
 - US and Canadian dual citizen attending a US high school. Each school card has a blue "For you" box (the `you` field) on fee status, aid and tuition.
 - Canada: Canadian citizenship gives domestic status at U of T and UBC (UBC unconfirmed). McGill: Red likely qualifies for Quebec resident tuition under Quebec "Situation 8" (Canadian citizen who has never lived in Canada and takes up residence in Quebec; needs a sworn statement, 10-year activity proof and 3 months of Quebec residence). Unconfirmed that living in Quebec only to study counts. Ask McGill Student Accounts. Quebec rate was $103.92/credit vs $432.85/credit out-of-province for 2026-27. Source: https://www.mcgill.ca/legaldocuments/quebec/situation8
-- US (Michigan, UCLA): US citizenship means a domestic applicant, FAFSA and need-based aid eligibility, no international rules. Red is a California resident (in-state at UCLA, out-of-state at Michigan) and has never lived in Canada.
-- History: the first version assumed a Canadian-only citizen who might be international at Michigan/UCLA. That text was removed when the dual citizenship was confirmed. UBC International Scholars Program, McGill Quebec CEGEP dates and the international fee notes stay out as irrelevant.
+- US (UCLA): US citizenship means a domestic applicant, FAFSA and need-based aid eligibility, no international rules. Red is a California resident (in-state at UCLA) and has never lived in Canada.
+- History: the first version assumed a Canadian-only citizen who might be international at the US schools. That text was removed when the dual citizenship was confirmed. UBC International Scholars Program, McGill Quebec CEGEP dates and the international fee notes stay out as irrelevant.
 
 ## Data notes (compiled 2026-10-09)
 - Core deadlines for McGill, U of T, UBC and UCLA were read from official pages.
-- Michigan deadlines and the fee came mostly from secondary pages (umich.edu blocked the fetch). Marked unconfirmed on the site.
 - English proficiency requirements were removed from the site on request (2026-10-09). UBC's course requirement "senior-level English" stays because it is a graduation requirement, not a proficiency test.
-- Unconfirmed: U of T fee and OUAC form/codes, UCLA and Michigan fees, UBC early deadline (Dec 1) and scholarship eligibility, McGill AP credit and undergraduate out-of-province rate.
+- Unconfirmed: U of T fee and OUAC form/codes, UCLA fee, UBC early deadline (Dec 1) and scholarship eligibility, McGill AP credit and undergraduate out-of-province rate.
 - Not covered: UTSC/UTM specific dates, UCLA supplemental application deadlines, IB/AP and Canadian-curriculum details, program extras at McGill and UBC.
 - Dates change every cycle. Re-check official pages and update before relying on them.
 
@@ -47,7 +46,6 @@ Red wants to apply for pre-veterinary studies. Pre-vet is an advising track, not
 - McGill: Macdonald Campus, B.Sc.(Agr. & Env. Sc.), Major in Life Sciences, Animal Health and Disease specialization (name unconfirmed). The only dedicated pre-vet pathway of the five.
 - U of T: Arts & Science, Life Sciences. No official pre-vet track found.
 - UBC: Land and Food Systems, B.Sc. Applied Biology, Applied Animal Biology (prepares for WCVM).
-- Michigan: LSA, biology or biomedical major, with LSA Pre-Health Advising.
 - UCLA: Letters & Science, a life sciences major or undeclared.
 - Unconfirmed: many official pages were unreadable (404s or search snippets only). Program-specific deadlines, AP rules for McGill/UBC/U of T, and whether California residency blocks Canadian vet schools (Guelph, WCVM) were not verified. Check each admissions office.
 
@@ -58,3 +56,6 @@ Dalhousie, McMaster, Guelph, Alberta, UVic, Calgary and SFU were added for the p
 - SFU: Canadian citizens get domestic tuition wherever they live (official). Domestic status for the others was NOT confirmed on official pages.
 - Unconfirmed: Fall 2027 deadlines for Dalhousie, McMaster, Guelph and Alberta (dates are from older cycles or third-party sites and are marked on the site); most fees (Alberta CAD 150 and SFU, UVic, Calgary fee tiers are from official pages but the tier that applies is inferred); Alberta ALES "Pre-Vet concentration" (third-party snippet); UCalgary's current test policy.
 - Progress-bar targets for these schools use the dates above, so several are unconfirmed.
+
+## Michigan removed (2026-10-09)
+The University of Michigan was dropped from the site on request (its school entry, icon, checklist, progress target and pre-vet box). It can be restored from git history (commits before this one).
