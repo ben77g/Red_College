@@ -92,3 +92,6 @@ The gate's room is now pitch black (`#gate` background `#000`). Two wall torches
 
 ## Rule: main campus first, agricultural campus as a note (2026-10-09)
 Owner's rule for schools that have an agricultural campus: the pre-vet box focuses on a good vet-prep program at the MAIN campus, and the agricultural-campus option appears only as a small italic note (the `alt` field in `PREVET`). Applied to McGill (Science BSc Biology; Macdonald Campus as the note) and Dalhousie (Science BSc at Halifax; Truro as the note). No other school here has a separate agricultural campus that matters (UBC's Land and Food Systems and Alberta's ALES are faculties on the main campuses).
+
+## Dragon centred (2026-10-09)
+The dragon is now vertically centred in the gate (`.dragon { margin:auto 0 }` in the flex column) instead of sitting at the bottom. The wrong-password message (`#gateMsg`) is pinned to the bottom of the screen, and the torches were moved down to match (`--ty:42vh`, 30vh on phones).
