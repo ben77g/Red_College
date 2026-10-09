@@ -107,3 +107,6 @@ The warm light on the figure (`.rim.l`, `.rim.r`) was drawn in a box only slight
 
 ## No border on phones (2026-10-09)
 On screens up to 600px wide the picture frame is hidden and its padding is 0 (`--frame:0px; #frame{display:none}` in the media query; `make_frame.py` writes the same rule, so regenerating keeps it).
+
+## Detail layout (2026-10-09)
+In an open school: the "Notes" text now sits under "Application fee" in the left column, and the green pre-vet box is full width under both columns, with its content in two columns (apply-to and school notes on the left; the Macdonald/Truro-style `alt` note and vet school basics on the right). It stacks to one column on narrow screens.

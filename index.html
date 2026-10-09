@@ -321,6 +321,8 @@
   body.locked #frame { display:none; }
   .prevet { margin-top:14px; border-color:#7fc77a; background:linear-gradient(135deg,#f3fff1,#fff); }
   .prevet ul { margin:4px 0 8px; }
+  .prevet { margin-top:18px; }
+  .prevet .pv-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:0 34px; align-items:start; }
   .mini { width:58%; display:flex; flex-direction:column; align-items:center; gap:2px; margin-top:-4px; }
   .mini .mtrack { width:100%; height:8px; border:1.5px solid #000; border-radius:6px; overflow:hidden; background:repeating-linear-gradient(90deg, rgba(176,42,116,.14) 0 2px, transparent 2px 6px), #ffd6e8; }
   .mini .mtrack i { display:block; height:100%; width:0; background:repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 6px), linear-gradient(180deg,#ff9ccb,#e0559a); border-radius:0 3px 3px 0; transition:width .4s ease; }
@@ -1184,22 +1186,26 @@ function render(){
       line(colB, "Standardized tests", s.tests, s.testsUnv);
       colB.append(el("h4",null,"Documents and extras"));
       const ul = el("ul"); s.docs.forEach(d=>ul.append(el("li",null,d))); colB.append(ul);
+      if (s.extra) line(colA, "Notes", s.extra);
+      cols.append(colA, colB); c.append(cols);
+      /* pre-vet box: full width under both columns, with its content split into two columns */
       const pv = PREVET[s.id];
       if (pv) {
         const box = el("div","you prevet");
         box.append(el("b",null,"Pre-vet studies"));
-        const p1 = el("p",null,"Apply to: "+pv.apply); p1.style.margin="4px 0";
+        const p1 = el("p",null,"Apply to: "+pv.apply); p1.style.margin="4px 0 8px";
         box.append(p1);
-        const pul = el("ul"); pv.notes.forEach(n=>pul.append(el("li",null,n))); box.append(pul);
-        if (pv.alt) { const al = el("p","alt",pv.alt); box.append(al); }
-        box.append(el("b",null,"Vet school basics"));
-        const bul = el("ul"); PREVET_BASICS.forEach(n=>bul.append(el("li",null,n))); box.append(bul);
+        const grid = el("div","pv-grid");
+        const left = el("div"), right = el("div");
+        const pul = el("ul"); pv.notes.forEach(n=>pul.append(el("li",null,n))); left.append(pul);
+        if (pv.alt) { const al = el("p","alt",pv.alt); right.append(al); }
+        right.append(el("b",null,"Vet school basics"));
+        const bul = el("ul"); PREVET_BASICS.forEach(n=>bul.append(el("li",null,n))); right.append(bul);
+        grid.append(left, right); box.append(grid);
         if (pv.unv) box.append(el("span","unv","Partly unconfirmed. Check each school's page. "));
         const pa = el("a",null,"Pre-vet page"); pa.href=pv.url; pa.target="_blank"; pa.rel="noopener"; box.append(pa);
-        colB.append(box);
+        c.append(box);
       }
-      if (s.extra) line(colB, "Notes", s.extra);
-      cols.append(colA, colB); c.append(cols);
       const a = el("a","official","Official page"); a.href=s.url; a.target="_blank"; a.rel="noopener";
       const p = el("p"); p.append(a); c.append(p);
       t.append(c);
