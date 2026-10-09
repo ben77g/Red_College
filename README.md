@@ -13,6 +13,7 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 - Icons are colored monogram badges (the `BRAND` object in the script), not official logos. Add an entry there for each new school id.
 - Theme: girly and frilly (pink polka-dot background, scalloped header edge, script headings, hearts and bows). All CSS is in the `<style>` block.
 - Progress bar: each opened school has a grass-green bar with a black outline and a pink SVG unicorn (`UNICORN_SVG`) that moves along it. Progress = ticked steps / total steps from the `TASKS` object (one checklist per school id). Ticks are saved in the browser's localStorage under `red_tasks_v1`, so they are per browser and per device, not shared.
+- Password gate: a big green dragon fills the screen with the password box in its mouth (`#gate` in the HTML, `PASSWORD` constant in the last script). A wrong password shakes the dragon. A right one (not case sensitive) makes the dragon rumble, fire bursts out of its mouth and floods the screen, then the site appears. The unlock is remembered per browser tab (sessionStorage `red_unlocked`), so a refresh does not ask again, but a new tab or visit does. NOT secure: the password is plain text in index.html and the page content is in the public repo. It only stops casual visitors.
 - There is a country filter and a search box.
 - To preview locally: open `index.html` in a browser, or run `python3 -m http.server` in this folder.
 - To add a school: copy an object in `SCHOOLS`, edit it, commit and push to `main`. Pages redeploys automatically.
