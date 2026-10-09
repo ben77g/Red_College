@@ -110,3 +110,6 @@ On screens up to 600px wide the picture frame is hidden and its padding is 0 (`-
 
 ## Detail layout (2026-10-09)
 In an open school: the "Notes" text now sits under "Application fee" in the left column, and the green pre-vet box is full width under both columns, with its content in two columns (apply-to and school notes on the left; the Macdonald/Truro-style `alt` note and vet school basics on the right). It stacks to one column on narrow screens.
+
+## Tape wording (2026-10-09)
+The tape on schools with an unconfirmed main deadline now reads "WORK IN PROGRESS" instead of "CAUTION" (the repeating tile is a 236x30 SVG in the `.tape i` background, text forced to fit with `textLength`). The yellow caution sign next to the name in an open school is unchanged.
