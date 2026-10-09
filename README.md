@@ -4,7 +4,7 @@ A static dashboard of first-year undergrad application deadlines and requirement
 Live site (GitHub Pages): https://deadlines.chickenkiller.com/ (custom domain via FreeDNS CNAME to ben77g.github.io; also https://ben77g.github.io/Red_College/)
 
 ## Current schools (Fall 2027 entry)
-McGill, University of Toronto (St. George), UBC Vancouver, University of Michigan, UCLA.
+McGill, University of Toronto (St. George), UBC Vancouver, University of Michigan, UCLA, plus (added 2026-10-09) Dalhousie, McMaster, Guelph, University of Alberta, UVic, University of Calgary and SFU. To add a school: add an object to `SCHOOLS`, and entries with the same id in `BRAND` (icon colors), `TARGETS` (progress bar date), `TASKS` (checklist) and `PREVET` (pre-vet box).
 
 ## How it works
 - Everything is in one file, `index.html` (no build step, no dependencies).
@@ -49,3 +49,11 @@ Red wants to apply for pre-veterinary studies. Pre-vet is an advising track, not
 - Michigan: LSA, biology or biomedical major, with LSA Pre-Health Advising.
 - UCLA: Letters & Science, a life sciences major or undeclared.
 - Unconfirmed: many official pages were unreadable (404s or search snippets only). Program-specific deadlines, AP rules for McGill/UBC/U of T, and whether California residency blocks Canadian vet schools (Guelph, WCVM) were not verified. Check each admissions office.
+
+## Seven schools added (2026-10-09)
+Dalhousie, McMaster, Guelph, Alberta, UVic, Calgary and SFU were added for the pre-vet applicant. Key findings:
+- Guelph has the Ontario Veterinary College. Per OVC's official page the domestic DVM cohorts need 12 months of Ontario residency and the international cohort excludes Canadian citizens (including dual citizens), so a California-resident dual citizen fits neither unless they move to Ontario. Same kind of residency barrier at Calgary (UCVM, Alberta residency). WCVM (Saskatchewan) may admit a dual citizen through its non-subsidized/international seats (unconfirmed; wcvm.admissions@usask.ca).
+- Dalhousie's Truro campus has a Pre-Veterinary Medicine pathway (75% average, Academic English 12, Pre-calculus 12).
+- SFU: Canadian citizens get domestic tuition wherever they live (official). Domestic status for the others was NOT confirmed on official pages.
+- Unconfirmed: Fall 2027 deadlines for Dalhousie, McMaster, Guelph and Alberta (dates are from older cycles or third-party sites and are marked on the site); most fees (Alberta CAD 150 and SFU, UVic, Calgary fee tiers are from official pages but the tier that applies is inferred); Alberta ALES "Pre-Vet concentration" (third-party snippet); UCalgary's current test policy.
+- Progress-bar targets for these schools use the dates above, so several are unconfirmed.
