@@ -80,3 +80,6 @@ No test suite. Render with headless chromium on NixOS (it is installed as `chrom
 `chromium --headless --no-sandbox --disable-gpu --virtual-time-budget=3000 --screenshot=/tmp/shot.png --window-size=1300,1300 file:///path/to/copy.html`
 Make a temp copy of `index.html` first: remove `class="locked"` from `<body>` and hide the gate (`style="display:none"` on `#gate`) to skip the password, and change `let openId = null;` to a school id to render it open. Add `--enable-logging=stderr --dump-dom` and grep for `Uncaught` to catch script errors. Screenshots of the final page were sent to the owner because the assistant cannot view images itself.
 Lessons: a Chrome `border-image` data URI of about 400 KB is silently ignored (keep the frame SVG small by defining the leaf once and using `<use>`); umich.edu blocked page fetches during research.
+
+## Gate text and button (2026-10-09)
+The "Speak the password to enter the castle" heading and the Enter button were removed on request. The password box is a one-field form, so pressing Enter on the keyboard still submits it (on a phone, use the keyboard's Go/Enter key).
