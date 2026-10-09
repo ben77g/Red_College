@@ -203,23 +203,30 @@
   #gate h2 { position:relative; margin:0 0 10px; font:400 clamp(30px,5.5vw,46px)/1.1 var(--script); text-align:center;
     background:linear-gradient(180deg,#fff6d8,#f1c66a 55%,#c89a3a); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; filter:drop-shadow(0 2px 6px rgba(0,0,0,.6)); }
   #gate h2::before { content:none; }
-  .dragon { position:relative; width:min(580px,94vw); aspect-ratio:600/560; }
-  .dragon svg { width:100%; height:100%; display:block; filter:drop-shadow(0 16px 22px rgba(0,0,0,.6)); }
+  .dragon { position:relative; width:min(96vw, 72vh); aspect-ratio:800/860; }
+  .dragon svg { width:100%; height:100%; display:block; overflow:visible; filter:drop-shadow(0 18px 22px rgba(0,0,0,.6)); }
+  .dragon .wing { transform-box:fill-box; transform-origin:100% 100%; }
+  .dragon .wing.r { transform-origin:0 100%; }
   @media (prefers-reduced-motion:no-preference) {
     .dragon:not(.breathe) svg { animation:breath 4s ease-in-out infinite; transform-origin:50% 90%; }
     .dragon .lid { animation:blink 5.5s infinite; }
     .dragon .puff { animation:puff 3s ease-out infinite; transform-box:fill-box; transform-origin:50% 100%; }
     .dragon .puff.b { animation-delay:1.5s; }
+    .dragon:not(.breathe) .wing { animation:flap 4s ease-in-out infinite; }
+    .dragon:not(.breathe) .wing.r { animation-name:flapR; }
   }
   .dragon .lid { transform:scaleY(0); transform-box:fill-box; transform-origin:50% 0; }
   @keyframes breath { 50% { transform:scale(1.015) translateY(-3px); } }
+  @keyframes flap { 50% { transform:rotate(-5deg) scaleX(.96); } }
+  @keyframes flapR { 50% { transform:rotate(5deg) scaleX(.96); } }
   @keyframes blink { 0%,94%,100% { transform:scaleY(0); } 97% { transform:scaleY(1); } }
   @keyframes puff { 0% { opacity:0; transform:translateY(0) scale(.4); } 20% { opacity:.55; } 100% { opacity:0; transform:translateY(-70px) scale(1.6); } }
   .dragon.shake { animation:shake .45s; }
   @keyframes shake { 20%{transform:translateX(-14px) rotate(-1.5deg)} 40%{transform:translateX(14px) rotate(1.5deg)} 60%{transform:translateX(-9px)} 80%{transform:translateX(9px)} }
   .dragon.breathe svg { animation:rumble .12s infinite; }
   @keyframes rumble { 50% { transform:translate(2px,-2px); } }
-  #gate form { position:absolute; left:29%; top:65.5%; width:42%; display:flex; gap:1.5%; align-items:center; z-index:3; }
+  /* the password box sits in the mouth: mouth spans x 130..470, y 335..482 in the 800x860 viewBox that starts at x=-100 */
+  #gate form { position:absolute; left:34%; top:42.6%; width:32%; display:flex; gap:1.5%; align-items:center; z-index:3; }
   #gate input { flex:1; min-width:0; padding:clamp(5px,1.3vw,10px) clamp(6px,1.5vw,12px); font:600 clamp(12px,2.6vw,16px) var(--body); border-radius:99px; border:2px solid #ffb3d9; background:#fff7fb; color:var(--plum); text-align:center; box-shadow:0 0 0 3px rgba(255,179,217,.25), 0 4px 14px rgba(0,0,0,.35); }
   #gate input::placeholder { color:#c48fb0; letter-spacing:.1em; }
   #gate input:focus { outline:none; border-color:#ff5fae; box-shadow:0 0 0 4px rgba(255,95,174,.35), 0 0 18px #ff5fae; }
@@ -227,21 +234,50 @@
   #gate button:hover { transform:translateY(-1px); box-shadow:0 4px 0 #a3246b, 0 8px 16px rgba(0,0,0,.4); }
   #gate button:active { transform:translateY(2px); box-shadow:0 1px 0 #a3246b; }
   #gateMsg { position:relative; min-height:26px; margin-top:10px; color:#ffb3d9; font-weight:800; text-align:center; text-shadow:0 1px 4px #000; letter-spacing:.02em; }
-  .fire { position:absolute; left:50%; top:72%; width:0; height:0; z-index:5; pointer-events:none; }
-  .fire i { position:absolute; left:-50px; bottom:0; width:100px; height:150px; transform-origin:50% 100%; opacity:0;
-    background:radial-gradient(ellipse at 50% 85%, #fffbd0 0%, #ffd53a 28%, #ff8a1f 58%, #e8301a 82%, rgba(232,48,26,0) 100%);
-    border-radius:50% 50% 50% 50% / 75% 75% 25% 25%; filter:blur(1px); }
-  .burn .fire i { animation:blast 1.7s ease-out forwards; animation-delay:var(--dl); }
-  @keyframes blast {
-    0% { opacity:0; transform:rotate(var(--r)) translateY(0) scale(.1); }
-    15% { opacity:1; }
-    60% { opacity:1; transform:rotate(var(--r)) translateY(-120px) scale(3.2,4.2); }
-    100% { opacity:.95; transform:rotate(var(--r)) translateY(-260px) scale(6,8); }
+  .burn form { opacity:0; transition:opacity .3s; }
+
+  /* fire: a jet pours out of the mouth toward the viewer, tongues of flame peel off it, embers fly,
+     then a sea of flames rises from the bottom of the screen and the gate burns away */
+  .fire { position:absolute; left:50%; top:47%; width:0; height:0; z-index:5; pointer-events:none; }
+  .fire .glow { position:absolute; left:-180px; top:-120px; width:360px; height:240px; border-radius:50%; opacity:0;
+    background:radial-gradient(ellipse at 50% 50%, rgba(255,240,170,.95) 0%, rgba(255,160,40,.7) 35%, rgba(255,80,20,0) 70%); filter:blur(6px); }
+  .fire .jet { position:absolute; left:-200px; top:-10px; width:400px; height:520px; transform-origin:50% 0; opacity:0; overflow:visible; }
+  .fire .tongue { transform-box:fill-box; transform-origin:50% 0; }
+  .fire i { position:absolute; left:-50px; top:-10px; width:100px; height:170px; transform-origin:50% 0; opacity:0;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 170'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffe17a'/%3E%3Cstop offset='.5' stop-color='%23ff8a1f'/%3E%3Cstop offset='1' stop-color='%23e8301a'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fffbe0'/%3E%3Cstop offset='1' stop-color='%23ffb23a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 0C62 30 92 60 90 100 92 135 72 170 50 170 28 170 8 135 10 100 8 60 38 30 50 0Z' fill='url(%23g)'/%3E%3Cpath d='M50 10C58 40 72 70 70 105 70 135 60 150 50 152 40 150 30 135 30 105 28 70 42 40 50 10Z' fill='url(%23c)' opacity='.9'/%3E%3C/svg%3E") center/100% 100% no-repeat; }
+  .fire b { position:absolute; left:-4px; top:-4px; width:8px; height:8px; border-radius:50%; opacity:0; background:#ffd23a; box-shadow:0 0 8px 2px #ff8a1f, 0 0 16px 4px rgba(255,80,20,.6); }
+  .burn .fire .glow { animation:glow 2.6s ease-out forwards; }
+  .burn .fire .jet { animation:jet 2.4s cubic-bezier(.2,.7,.3,1) forwards; }
+  .burn .fire .tongue { animation:flicker .18s ease-in-out infinite alternate; }
+  .burn .fire .core { animation-duration:.14s; animation-direction:alternate-reverse; }
+  .burn .fire i { animation:lick 1.5s ease-out forwards; animation-delay:var(--dl); }
+  .burn .fire b { animation:ember var(--d) ease-out forwards; animation-delay:var(--dl); }
+  @keyframes glow { 0% { opacity:0; transform:scale(.3); } 20% { opacity:.9; transform:scale(1); } 100% { opacity:.6; transform:scale(1.8); } }
+  @keyframes jet {
+    0% { opacity:0; transform:scale(.15,0); }
+    12% { opacity:1; transform:scale(.9,.45); }
+    35% { transform:scale(1,1); }
+    100% { opacity:1; transform:scale(1.6,1.45); }
   }
-  .flash { position:fixed; left:50%; top:60%; width:140px; height:140px; margin:-70px 0 0 -70px; border-radius:50%; z-index:1001; pointer-events:none; opacity:0;
-    background:radial-gradient(circle,#fff6c2 0%,#ffbf3a 40%,#ff6a1a 70%,#e8301a 100%); }
-  .flash.go { animation:flash 2.4s ease-in forwards; }
-  @keyframes flash { 0%{opacity:0;transform:scale(.2)} 25%{opacity:.85;transform:scale(6)} 55%{opacity:1;transform:scale(40)} 100%{opacity:0;transform:scale(40)} }
+  @keyframes flicker { from { transform:skewX(-3deg) scaleX(.96); } to { transform:skewX(3deg) scaleX(1.04); } }
+  @keyframes lick {
+    0% { opacity:0; transform:rotate(calc(180deg + var(--r))) translateY(0) scale(.2); }
+    20% { opacity:1; }
+    100% { opacity:0; transform:rotate(calc(180deg + var(--r))) translateY(-380px) scale(calc(var(--s) * 2.2), calc(var(--s) * 2.6)); }
+  }
+  @keyframes ember { 0% { opacity:0; transform:translate(0,0) scale(1); } 15% { opacity:1; } 100% { opacity:0; transform:translate(var(--x), var(--y)) scale(.3); } }
+  .flood { position:absolute; left:-5%; right:-5%; bottom:0; height:112%; z-index:6; pointer-events:none; transform:translateY(101%);
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120V70C10 40 20 20 30 10 38 40 44 60 48 72 56 44 66 26 78 14 84 42 92 58 100 70 108 38 120 18 132 6 138 40 146 60 152 74 160 44 170 28 182 16 190 46 198 64 206 72 214 40 226 18 240 8 246 42 254 60 262 70 270 46 284 56 300 70V120Z' fill='%23ff8a1f'/%3E%3Cpath d='M0 120V96C12 76 22 62 30 54 38 74 44 88 50 96 58 76 68 62 80 54 86 76 94 88 102 96 110 74 122 60 134 52 140 78 148 90 154 98 162 78 172 64 184 56 190 80 198 92 206 100 214 78 226 62 240 54 246 80 254 92 262 100 270 80 286 90 300 96V120Z' fill='%23ffd43a'/%3E%3C/svg%3E") repeat-x top / 420px 180px,
+      linear-gradient(180deg, rgba(255,212,58,0) 0, rgba(255,212,58,0) 170px, #ffd43a 171px, #ff8a1f 35%, #ef3c1a 70%, #8c1208 100%); }
+  .burn .flood { animation:flood 1.7s cubic-bezier(.35,.5,.35,1) .6s forwards, lickup .22s ease-in-out .6s infinite alternate; }
+  @keyframes flood { to { transform:translateY(0); } }
+  @keyframes lickup { from { background-position:0 0, 0 0; } to { background-position:14px -10px, 0 0; } }
+  #gate.fade { transition-duration:1.1s; }
+  .flash { position:fixed; left:50%; top:50%; width:140px; height:140px; margin:-70px 0 0 -70px; border-radius:50%; z-index:1001; pointer-events:none; opacity:0;
+    background:radial-gradient(circle,#fff6c2 0%,#ffd04a 30%,rgba(255,106,26,.5) 60%,rgba(232,48,26,0) 100%); }
+  .flash.go { animation:flash 1.4s ease-out .5s forwards; }
+  @keyframes flash { 0%{opacity:0;transform:scale(.2)} 20%{opacity:.75;transform:scale(5)} 100%{opacity:0;transform:scale(14)} }
   .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
   @media (max-width:600px) {
@@ -260,6 +296,8 @@
     .flag::before { width:26px; height:16px; }
     .sun { width:42px; height:42px; font-size:12px; top:10px; left:12px; }
     .sign { font-size:10px; }
+    #gate form { left:30.5%; width:39%; gap:1%; }
+    #gate input { padding-left:4px; padding-right:4px; }
   }
 
   /* detailed white picture frame, acanthus leaf molding (SVG border-image, generated by make_frame.py) */
@@ -280,7 +318,7 @@
   <div class="hills" aria-hidden="true"></div>
   <h2>Speak the password to enter the castle</h2>
   <div class="dragon" id="dragon">
-    <svg viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg viewBox="-100 0 800 860" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="skin" cx="42%" cy="30%" r="75%"><stop offset="0" stop-color="#7fdc72"/><stop offset=".55" stop-color="#43a84a"/><stop offset="1" stop-color="#226b2d"/></radialGradient>
         <radialGradient id="belly" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#c8f0a0"/><stop offset="1" stop-color="#8fd27a"/></radialGradient>
@@ -289,8 +327,43 @@
         <linearGradient id="horng" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#c9b48a"/><stop offset=".5" stop-color="#f7ead0"/><stop offset="1" stop-color="#fffaf0"/></linearGradient>
         <linearGradient id="frillg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2b8a39"/><stop offset="1" stop-color="#4fb352"/></linearGradient>
         <linearGradient id="toothg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf4"/><stop offset="1" stop-color="#e6dcc0"/></linearGradient>
+        <radialGradient id="skin2" cx="50%" cy="20%" r="80%"><stop offset="0" stop-color="#5cc45e"/><stop offset=".6" stop-color="#3a9e44"/><stop offset="1" stop-color="#1f6a2c"/></radialGradient>
+        <linearGradient id="bellyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9f7b4"/><stop offset="1" stop-color="#9ccf7e"/></linearGradient>
+        <linearGradient id="wingg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d2466"/><stop offset=".5" stop-color="#a63f8a"/><stop offset="1" stop-color="#d8669f"/></linearGradient>
+        <linearGradient id="wingg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d2466"/><stop offset=".5" stop-color="#a63f8a"/><stop offset="1" stop-color="#d8669f"/></linearGradient>
         <pattern id="scales" width="34" height="30" patternUnits="userSpaceOnUse"><path d="M0 15 q8.5 -12 17 0 q8.5 -12 17 0 M-8.5 30 q8.5 -12 17 0 q8.5 -12 17 0 q8.5 -12 17 0" fill="none" stroke="#1d6b2a" stroke-width="2.2" opacity=".35"/></pattern>
       </defs>
+      <!-- wings (behind everything), tail, feet, torso, belly, arms and hands -->
+      <g class="wing" stroke="#16501f" stroke-width="5" stroke-linejoin="round">
+        <path d="M150 520 Q20 300 -90 150 Q-40 250 -70 330 Q-5 410 20 470 Q80 500 150 520 Z" fill="url(#wingg)"/>
+      </g>
+      <g class="wing r" stroke="#16501f" stroke-width="5" stroke-linejoin="round">
+        <path d="M450 520 Q580 300 690 150 Q640 250 670 330 Q605 410 580 470 Q520 500 450 520 Z" fill="url(#wingg2)"/>
+      </g>
+      <g class="wing" fill="none" stroke="#1f6d2a" stroke-width="10" stroke-linecap="round"><path d="M150 520 Q20 300 -90 150 M150 520 L-70 330 M150 520 L20 470"/></g>
+      <g class="wing r" fill="none" stroke="#1f6d2a" stroke-width="10" stroke-linecap="round"><path d="M450 520 Q580 300 690 150 M450 520 L670 330 M450 520 L580 470"/></g>
+      <g class="wing" fill="none" stroke="#f0a8cf" stroke-width="3" stroke-linecap="round" opacity=".45"><path d="M90 440 Q0 300 -60 190"/></g>
+      <g class="wing r" fill="none" stroke="#f0a8cf" stroke-width="3" stroke-linecap="round" opacity=".45"><path d="M510 440 Q600 300 660 190"/></g>
+      <path d="M420 745 C540 790 665 735 660 610 C658 560 625 525 592 548 L603 574 C626 566 636 592 634 616 C636 712 540 752 440 722 Z" fill="url(#skin2)" stroke="#16501f" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M596 552 L560 506 L548 578 L600 578 Z" fill="#3aa443" stroke="#16501f" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M500 752 l10 -26 l16 22 M560 728 l6 -26 l18 18 M612 686 l0 -26 l20 14" fill="#3aa443" stroke="#16501f" stroke-width="4" stroke-linejoin="round"/>
+      <g stroke="#16501f" stroke-width="6" stroke-linejoin="round"><ellipse cx="205" cy="800" rx="78" ry="34" fill="url(#skin2)"/><ellipse cx="395" cy="800" rx="78" ry="34" fill="url(#skin2)"/></g>
+      <g fill="#fffdf2" stroke="#8a7a4a" stroke-width="3" stroke-linejoin="round">
+        <path d="M150 822 l10 26 l14 -22z M190 830 l12 26 l14 -24z M232 826 l12 24 l14 -22z"/>
+        <path d="M340 826 l12 24 l14 -22z M384 830 l12 26 l14 -24z M424 822 l12 24 l14 -22z"/>
+      </g>
+      <path d="M300 470 C425 470 478 560 476 660 C474 762 400 806 300 806 C200 806 126 762 124 660 C122 560 175 470 300 470 Z" fill="url(#skin2)" stroke="#16501f" stroke-width="7"/>
+      <path d="M300 470 C425 470 478 560 476 660 C474 762 400 806 300 806 C200 806 126 762 124 660 C122 560 175 470 300 470 Z" fill="url(#scales)"/>
+      <path d="M300 515 C385 515 418 590 416 670 C414 745 365 786 300 788 C235 786 186 745 184 670 C182 590 215 515 300 515 Z" fill="url(#bellyg)" stroke="#2f7a35" stroke-width="4"/>
+      <g fill="none" stroke="#7fb562" stroke-width="3.5" stroke-linecap="round"><path d="M202 585 Q300 568 398 585 M190 630 Q300 614 410 630 M186 675 Q300 660 414 675 M192 720 Q300 706 408 720 M212 760 Q300 750 388 760"/></g>
+      <g fill="none" stroke="#16501f" stroke-width="56" stroke-linecap="round"><path d="M165 575 C135 620 115 650 105 690"/><path d="M435 575 C465 620 485 650 495 690"/></g>
+      <g fill="none" stroke="#3aa443" stroke-width="44" stroke-linecap="round"><path d="M165 575 C135 620 115 650 105 690"/><path d="M435 575 C465 620 485 650 495 690"/></g>
+      <g fill="none" stroke="#6fcf6a" stroke-width="8" stroke-linecap="round" opacity=".5"><path d="M150 585 C128 620 112 648 104 676"/><path d="M450 585 C472 620 488 648 496 676"/></g>
+      <g stroke="#16501f" stroke-width="6" stroke-linejoin="round"><ellipse cx="100" cy="705" rx="36" ry="30" fill="#4db051"/><ellipse cx="500" cy="705" rx="36" ry="30" fill="#4db051"/></g>
+      <g fill="#fffdf2" stroke="#8a7a4a" stroke-width="3" stroke-linejoin="round">
+        <path d="M68 720 l-8 28 l18 -16z M92 732 l-2 30 l18 -22z M118 728 l8 28 l12 -24z"/>
+        <path d="M532 720 l8 28 l-18 -16z M508 732 l2 30 l-18 -22z M482 728 l-8 28 l-12 -24z"/>
+      </g>
       <!-- horns -->
       <path d="M170 130 C120 90 95 40 100 5 C140 40 175 70 215 95 Z" fill="url(#horng)" stroke="#5c4a22" stroke-width="5" stroke-linejoin="round"/>
       <path d="M430 130 C480 90 505 40 500 5 C460 40 425 70 385 95 Z" fill="url(#horng)" stroke="#5c4a22" stroke-width="5" stroke-linejoin="round"/>
@@ -341,13 +414,27 @@
       <!-- gloss on the lip -->
       <path d="M160 338 C230 328 370 328 440 338" fill="none" stroke="#9fe08f" stroke-width="4" stroke-linecap="round" opacity=".45"/>
     </svg>
-    <div class="fire"><i style="--r:0deg;--dl:0s"></i><i style="--r:-14deg;--dl:.1s"></i><i style="--r:14deg;--dl:.15s"></i><i style="--r:-28deg;--dl:.25s"></i><i style="--r:28deg;--dl:.3s"></i><i style="--r:-6deg;--dl:.4s"></i><i style="--r:8deg;--dl:.45s"></i></div>
+    <div class="fire">
+      <div class="glow"></div>
+      <svg class="jet" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="jetg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff9d6"/><stop offset=".22" stop-color="#ffd43a"/><stop offset=".55" stop-color="#ff8a1f"/><stop offset=".85" stop-color="#ef3c1a"/><stop offset="1" stop-color="#c41d10"/></linearGradient>
+          <linearGradient id="jetc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#fff1a8"/><stop offset="1" stop-color="#ffb13a"/></linearGradient>
+        </defs>
+        <path class="tongue" d="M200 0 C236 70 326 150 366 250 C392 316 404 384 384 436 C372 466 348 452 338 420 C330 466 304 512 284 474 C262 512 242 486 234 442 C216 504 186 506 176 450 C156 500 126 492 120 440 C104 484 74 470 64 428 C46 466 16 452 14 400 C0 342 12 280 36 236 C78 150 164 70 200 0 Z" fill="url(#jetg)"/>
+        <path class="tongue core" d="M200 16 C224 90 282 170 300 262 C312 322 302 384 272 404 C252 416 240 386 236 362 C226 402 206 424 194 392 C184 424 160 414 150 380 C132 402 110 392 104 350 C92 300 108 230 128 190 C158 120 190 76 200 16 Z" fill="url(#jetc)" opacity=".92"/>
+        <ellipse cx="200" cy="40" rx="46" ry="60" fill="#fff" opacity=".85"/>
+      </svg>
+      <i style="--r:0deg;--dl:0.25s;--s:1"></i><i style="--r:-22deg;--dl:0.35s;--s:0.85"></i><i style="--r:22deg;--dl:0.4s;--s:0.8"></i><i style="--r:-44deg;--dl:0.55s;--s:0.7"></i><i style="--r:44deg;--dl:0.5s;--s:0.75"></i><i style="--r:-10deg;--dl:0.7s;--s:0.6"></i><i style="--r:12deg;--dl:0.8s;--s:0.65"></i><i style="--r:-32deg;--dl:0.9s;--s:0.5"></i><i style="--r:34deg;--dl:0.95s;--s:0.55"></i>
+      <b style="--x:-89px;--y:157px;--dl:0.73s;--d:0.93s"></b><b style="--x:420px;--y:354px;--dl:0.40s;--d:1.31s"></b><b style="--x:99px;--y:189px;--dl:0.34s;--d:1.20s"></b><b style="--x:-349px;--y:203px;--dl:0.40s;--d:1.20s"></b><b style="--x:159px;--y:143px;--dl:1.34s;--d:1.34s"></b><b style="--x:176px;--y:111px;--dl:0.93s;--d:1.18s"></b><b style="--x:-194px;--y:103px;--dl:0.91s;--d:0.99s"></b><b style="--x:9px;--y:153px;--dl:0.89s;--d:1.30s"></b><b style="--x:153px;--y:497px;--dl:1.05s;--d:0.97s"></b><b style="--x:164px;--y:407px;--dl:0.51s;--d:0.97s"></b><b style="--x:309px;--y:112px;--dl:0.92s;--d:1.33s"></b><b style="--x:88px;--y:428px;--dl:0.88s;--d:1.44s"></b><b style="--x:56px;--y:379px;--dl:1.32s;--d:1.15s"></b><b style="--x:-166px;--y:486px;--dl:0.50s;--d:1.45s"></b><b style="--x:-337px;--y:374px;--dl:0.63s;--d:1.25s"></b><b style="--x:-69px;--y:453px;--dl:0.79s;--d:1.33s"></b><b style="--x:-346px;--y:140px;--dl:0.86s;--d:1.02s"></b><b style="--x:-70px;--y:157px;--dl:1.33s;--d:1.20s"></b><b style="--x:264px;--y:119px;--dl:1.14s;--d:1.30s"></b><b style="--x:417px;--y:240px;--dl:0.67s;--d:1.15s"></b><b style="--x:88px;--y:376px;--dl:1.18s;--d:0.95s"></b><b style="--x:-325px;--y:218px;--dl:0.82s;--d:1.36s"></b>
+    </div>
     <form id="gateForm" autocomplete="off">
       <input id="gatePw" type="password" placeholder="password" aria-label="Password" autocomplete="off">
       <button type="submit">Enter</button>
     </form>
   </div>
   <div id="gateMsg" role="status"></div>
+  <div class="flood" aria-hidden="true"></div>
 </div>
 <div class="flash" id="flash"></div>
 <h1 class="sr-only">Red's College Dashboard</h1>
@@ -726,7 +813,8 @@ const PASSWORD = "unicorn";
 (function(){
   const gate = document.getElementById("gate");
   const flash = document.getElementById("flash");
-  function open(){ document.body.classList.remove("locked"); gate.remove(); flash.remove(); }
+  function reveal(){ document.body.classList.remove("locked"); }
+  function open(){ reveal(); gate.remove(); flash.remove(); }
   try { if (sessionStorage.getItem("red_unlocked")==="1") { open(); return; } } catch(e){}
   const dragon = document.getElementById("dragon");
   const msg = document.getElementById("gateMsg");
@@ -742,8 +830,8 @@ const PASSWORD = "unicorn";
       msg.textContent = "The dragon approves...";
       dragon.classList.add("breathe");
       setTimeout(()=>{ dragon.classList.remove("breathe"); gate.classList.add("burn"); flash.classList.add("go"); }, 450);
-      setTimeout(()=>gate.classList.add("fade"), 2100);
-      setTimeout(open, 2900);
+      setTimeout(()=>{ reveal(); gate.classList.add("fade"); }, 2350);
+      setTimeout(open, 3500);
     } else {
       msg.textContent = "The dragon says no. Try again!";
       dragon.classList.remove("shake"); void dragon.offsetWidth; dragon.classList.add("shake");
