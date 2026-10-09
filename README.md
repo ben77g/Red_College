@@ -1,7 +1,7 @@
 # Red_College ("Red's")
 
 A static dashboard of first-year undergrad application deadlines and requirements, written for one applicant profile: a Canadian citizen attending a US high school (US curriculum, AP, SAT/ACT available).
-Live site (GitHub Pages): https://ben77g.github.io/Red_College/
+Live site (GitHub Pages): https://deadlines.chickenkiller.com/ (custom domain via FreeDNS CNAME to ben77g.github.io; also https://ben77g.github.io/Red_College/)
 
 ## Current schools (Fall 2027 entry)
 McGill, University of Toronto (St. George), UBC Vancouver, University of Michigan, UCLA.
