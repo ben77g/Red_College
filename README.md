@@ -17,8 +17,8 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 
 ## Applicant profile (updated 2026-10-09)
 - US and Canadian dual citizen attending a US high school. Each school card has a blue "For you" box (the `you` field) on fee status, aid and tuition.
-- Canada: Canadian citizenship gives domestic status at U of T and UBC (UBC unconfirmed). McGill uses the out-of-province Canadian rate unless Red is a Quebec resident.
-- US (Michigan, UCLA): US citizenship means a domestic applicant, FAFSA and need-based aid eligibility, no international rules. In-state versus out-of-state tuition depends on Red's state of residence, which has not been given (the page says so).
+- Canada: Canadian citizenship gives domestic status at U of T and UBC (UBC unconfirmed). McGill: Red likely qualifies for Quebec resident tuition under Quebec "Situation 8" (Canadian citizen who has never lived in Canada and takes up residence in Quebec; needs a sworn statement, 10-year activity proof and 3 months of Quebec residence). Unconfirmed that living in Quebec only to study counts. Ask McGill Student Accounts. Quebec rate was $103.92/credit vs $432.85/credit out-of-province for 2026-27. Source: https://www.mcgill.ca/legaldocuments/quebec/situation8
+- US (Michigan, UCLA): US citizenship means a domestic applicant, FAFSA and need-based aid eligibility, no international rules. Red is a California resident (in-state at UCLA, out-of-state at Michigan) and has never lived in Canada.
 - History: the first version assumed a Canadian-only citizen who might be international at Michigan/UCLA. That text was removed when the dual citizenship was confirmed. UBC International Scholars Program, McGill Quebec CEGEP dates and the international fee notes stay out as irrelevant.
 
 ## Data notes (compiled 2026-10-09)

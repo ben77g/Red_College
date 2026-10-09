@@ -98,12 +98,13 @@ const SCHOOLS = [
 {
   id:"mcgill", name:"McGill University", place:"Montreal, QC", country:"CA",
   platform:"McGill online application (Applicant Portal for documents)", fee:"CAD 140.16, non-refundable",
-  you:"You apply in the \"U.S. high school applicants\" group. As a Canadian citizen (your US citizenship doesn't change that) you pay Canadian tuition, not the international rate. Unless you are a Quebec resident you pay the out-of-province Canadian rate, and you must be able to prove your status. Verify the undergraduate rates with McGill Student Accounts.", youUnv:true,
+  you:"You apply in the \"U.S. high school applicants\" group. Your situation looks like Quebec government \"Situation 8\": a Canadian citizen living in Canada for the first time, who takes up residence in Quebec. If you qualify you pay the Quebec resident rate (about $103.92 per credit in 2026-27) instead of the out-of-province Canadian rate (about $432.85 per credit for students first enrolled in 2024-25; the newer rate was not confirmed). Required proof: Canadian citizenship, a sworn statement, proof of your activities for the 10 years before arriving (or since birth if shorter), and proof of 3 months of Quebec residence. You can't show the 3 months before you arrive, so expect to be billed at the higher rate first and reassessed after arrival. Not confirmed: McGill's text has no exclusion for students living in Quebec only to study, but ask McGill Student Accounts to confirm before relying on it. Your parents' California address rules out Situation 5.", youUnv:true,
   tests:"SAT (code 0935-00) or ACT (code 5231) are optional for most programs for Fall 2027. Some programs need extras such as CASPer or a personal statement.",
-  docs:["Self-report grades from grades 10 to 12 (window Nov 15, 2026 to Mar 1, 2027)","Official supporting documents due Mar 1","AP exams can earn advanced-standing credit based on final results (unconfirmed)","Nursing, Music, Education, Social Work have program extras"],
+  docs:["Self-report grades from grades 10 to 12 (window Nov 15, 2026 to Mar 1, 2027)","Official supporting documents due Mar 1","For Quebec resident tuition: citizenship proof, sworn statement, 10-year activity history, 3 months of Quebec residence (McGill Situation 8)","AP exams can earn advanced-standing credit based on final results (unconfirmed)","Nursing, Music, Education, Social Work have program extras"],
   docsUnv:false,
   english:"Not required if you lived or studied 4+ years in an English-speaking country, so a US high school should qualify. Check the exact wording.",
   url:"https://www.mcgill.ca/undergraduate-admissions/apply/requirements/us",
+  extra:"Quebec residency rules: https://www.mcgill.ca/legaldocuments/quebec/situation8",
   deadlines:[
     {l:"Application", d:"2027-01-15"},
     {l:"Major Entrance Scholarship application", d:"2027-01-21"},
@@ -148,7 +149,7 @@ const SCHOOLS = [
 {
   id:"umich", name:"University of Michigan", place:"Ann Arbor, MI", country:"US",
   platform:"Common App plus U-M essay responses", fee:"$75", feeUnv:true,
-  you:"As a US citizen you apply as a domestic applicant, with the domestic fee, no visa or international proof-of-funds rules, and eligibility for FAFSA and need-based aid. Michigan residents pay in-state tuition. If you live outside Michigan you pay the out-of-state rate, which depends on where you live, not on your citizenship. Aid details were not confirmed on official pages.", youUnv:true,
+  you:"As a US citizen you apply as a domestic applicant, with the domestic fee, no visa or international proof-of-funds rules, and eligibility for FAFSA and need-based aid. Because you live in California, you would pay the out-of-state (nonresident) rate at Michigan. Aid details were not confirmed on official pages.", youUnv:true,
   tests:"Test-optional for 2027. AP/IB results are considered in context.",
   docs:["Common App","FAFSA for financial aid (opened Oct 1; Early Decision aid deadline Nov 15, unconfirmed)","High-school transcript","Counselor and teacher recommendations (not confirmed)","School-specific extras (engineering, music and others) not confirmed"],
   english:"Not expected to apply to you as a US high-school student and citizen. Confirm on the Michigan site.", englishUnv:true,
@@ -164,9 +165,9 @@ const SCHOOLS = [
 {
   id:"ucla", name:"UCLA", place:"Los Angeles, CA", country:"US",
   platform:"UC application", fee:"$80 domestic fee per campus (reported by secondary sources; confirm on the UC application). Fee waivers are available.", feeUnv:true,
-  you:"As a US citizen you apply as a domestic applicant. You are eligible for FAFSA and need-based aid. California residents pay in-state tuition. If you live outside California you pay the nonresident rate, which depends on where you live and not on your citizenship. UCLA's page says an international student is someone who needs an F-1 visa, which doesn't apply to you. Residency rules were not confirmed.", youUnv:true,
+  you:"As a US citizen and California resident you apply as a domestic applicant, pay in-state tuition, and are eligible for FAFSA and need-based aid, including Cal Grant if you meet its requirements. The UC minimum GPA for California residents is 3.0 (the 3.4 figure is for nonresidents). Residency for tuition is decided by UC rules, which were not checked here.", youUnv:true,
   tests:"SAT/ACT not considered for admission or scholarships. AP/IB scores due July 15.",
-  docs:["FAFSA (and Cal Grant GPA verification by Mar 2) for financial aid","Self-reported grades and courses (official transcripts only after admission)","Personal Insight Questions","UC minimums: 15 a-g courses; GPA at least 3.0 (3.4 for nonresidents)","Supplemental applications: Arts and Architecture, Music, Nursing, Theater/Film/TV (deadlines not found)"],
+  docs:["FAFSA (and Cal Grant GPA verification by Mar 2) for financial aid","Self-reported grades and courses (official transcripts only after admission)","Personal Insight Questions","UC minimums: 15 a-g courses; GPA at least 3.0 as a California resident","Supplemental applications: Arts and Architecture, Music, Nursing, Theater/Film/TV (deadlines not found)"],
   english:"Exempt if all of your high school was in English, which should apply to you.",
   url:"https://admission.ucla.edu/apply/freshman",
   extra:"No early action or early decision.",
