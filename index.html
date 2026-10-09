@@ -70,10 +70,10 @@
 <body>
 <header>
   <h1>Red's College Dashboard</h1>
-  <p>Fall 2027 first-year deadlines and requirements for a Canadian citizen applying from a US high school</p>
+  <p>Fall 2027 first-year deadlines and requirements for a US and Canadian dual citizen applying from a US high school</p>
 </header>
 <main>
-  <div class="profile"><b>Profile used on this page:</b> Canadian citizen, attending a US high school (US curriculum, AP courses, SAT/ACT available). Whether you are a US permanent resident or need a student visa changes how the US schools treat you. See the blue "For you" box on each card.</div>
+  <div class="profile"><b>Profile used on this page:</b> US and Canadian dual citizen, attending a US high school (US curriculum, AP courses, SAT/ACT available). Your US citizenship makes you a domestic applicant at Michigan and UCLA, and your Canadian citizenship gives you Canadian status at McGill, U of T and UBC. See the blue "For you" box on each card.</div>
   <div class="note" style="margin-top:10px">Compiled from school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date.</div>
 
   <div class="layout">
@@ -98,7 +98,7 @@ const SCHOOLS = [
 {
   id:"mcgill", name:"McGill University", place:"Montreal, QC", country:"CA",
   platform:"McGill online application (Applicant Portal for documents)", fee:"CAD 140.16, non-refundable",
-  you:"You apply in the \"U.S. high school applicants\" group. As a Canadian citizen you pay Canadian tuition, not the international rate. Unless you are a Quebec resident you pay the out-of-province Canadian rate, and you must be able to prove your status. Verify the undergraduate rates with McGill Student Accounts.", youUnv:true,
+  you:"You apply in the \"U.S. high school applicants\" group. As a Canadian citizen (your US citizenship doesn't change that) you pay Canadian tuition, not the international rate. Unless you are a Quebec resident you pay the out-of-province Canadian rate, and you must be able to prove your status. Verify the undergraduate rates with McGill Student Accounts.", youUnv:true,
   tests:"SAT (code 0935-00) or ACT (code 5231) are optional for most programs for Fall 2027. Some programs need extras such as CASPer or a personal statement.",
   docs:["Self-report grades from grades 10 to 12 (window Nov 15, 2026 to Mar 1, 2027)","Official supporting documents due Mar 1","AP exams can earn advanced-standing credit based on final results (unconfirmed)","Nursing, Music, Education, Social Work have program extras"],
   docsUnv:false,
@@ -113,7 +113,7 @@ const SCHOOLS = [
 {
   id:"uoft", name:"University of Toronto (St. George)", place:"Toronto, ON", country:"CA",
   platform:"OUAC, probably form 105 for non-Ontario applicants (unconfirmed). Codes reported: SAT/AP 0982, ACT 5366 (unconfirmed).", fee:"Unconfirmed for 2027. Check OUAC.", feeUnv:true,
-  you:"Canadian citizens living abroad get domestic tuition with no residency requirement, though a non-Ontario-resident fee may apply.",
+  you:"As a Canadian citizen living abroad you get domestic tuition with no residency requirement, though a non-Ontario-resident fee may apply. Your US citizenship doesn't affect this.",
   tests:"SAT/ACT optional, except Engineering, which requires you to disclose all test scores.",
   docs:["US transcript and grades, assessed on US-curriculum requirements","Calculus or AP Calculus is typically required for STEM and commerce","Engineering: Online Student Profile (Jan 15)","Music questionnaire (Jan 15)","Architecture: One Idea (Feb 1)","Rotman Commerce and Computer Science supplementals (Feb 1)"],
   english:"Proficiency is required unless exempted. The exemption wording was not found, so confirm that an English-language US high school qualifies.", englishUnv:true,
@@ -131,7 +131,7 @@ const SCHOOLS = [
 {
   id:"ubc", name:"University of British Columbia (Vancouver)", place:"Vancouver, BC", country:"CA",
   platform:"UBC online application", fee:"CAD 78.50, the domestic rate for Canadian citizens (international rate is CAD 173.25)",
-  you:"Your citizenship should put you in the domestic fee group (the fee page uses \"Canadian citizens\" for the domestic rate). Domestic status for Canadians living in the US was not confirmed on an official page. Presidential Scholars, Centennial and Beyond Tomorrow awards are for Canadian citizens and permanent residents (Dec 1), but eligibility rules were not verified.", youUnv:true,
+  you:"Your Canadian citizenship should put you in the domestic fee group (the fee page uses \"Canadian citizens\" for the domestic rate). Domestic status for Canadians living in the US was not confirmed on an official page. Presidential Scholars, Centennial and Beyond Tomorrow awards are for Canadian citizens and permanent residents (Dec 1), but eligibility rules were not verified.", youUnv:true,
   tests:"SAT/ACT optional.",
   docs:["Graduation from an accredited US school","Senior-level English, three years of math, at least 70% in junior or senior English","At least six senior-level courses recommended; AP accepted","Faculty-specific prerequisites apply","Personal profile: short essays of 50 to 500 words each (also used for scholarships)","Transcripts and curriculum documents are due Jan 31 to May 31 after you apply"],
   english:"Likely met through the senior-level English requirement at an English-language US school. Exemption wording not found.", englishUnv:true,
@@ -148,10 +148,10 @@ const SCHOOLS = [
 {
   id:"umich", name:"University of Michigan", place:"Ann Arbor, MI", country:"US",
   platform:"Common App plus U-M essay responses", fee:"$75", feeUnv:true,
-  you:"If you are not a US citizen or permanent resident, you would likely be an international applicant. That means you can't use FAFSA or need-based aid, and tuition would likely be the non-resident rate. Ask the admissions office how a Canadian citizen in a US high school is classified. Not verified.", youUnv:true,
+  you:"As a US citizen you apply as a domestic applicant, with the domestic fee, no visa or international proof-of-funds rules, and eligibility for FAFSA and need-based aid. Michigan residents pay in-state tuition. If you live outside Michigan you pay the out-of-state rate, which depends on where you live, not on your citizenship. Aid details were not confirmed on official pages.", youUnv:true,
   tests:"Test-optional for 2027. AP/IB results are considered in context.",
-  docs:["Common App","High-school transcript","Counselor and teacher recommendations (not confirmed)","School-specific extras (engineering, music and others) not confirmed"],
-  english:"Reported exemption: 4 years of study in the US or Canada plus SAT EBRW 650+ or ACT English and Reading both 27+. This means a test score may be needed for the exemption.", englishUnv:true,
+  docs:["Common App","FAFSA for financial aid (opened Oct 1; Early Decision aid deadline Nov 15, unconfirmed)","High-school transcript","Counselor and teacher recommendations (not confirmed)","School-specific extras (engineering, music and others) not confirmed"],
+  english:"Not expected to apply to you as a US high-school student and citizen. Confirm on the Michigan site.", englishUnv:true,
   url:"https://admissions.umich.edu/apply/first-year-applicants/requirements-deadlines",
   extra:"Official pages could not be read, so dates come from secondary pages and search snippets. Early Decision (binding) is new this cycle.",
   deadlines:[
@@ -163,15 +163,16 @@ const SCHOOLS = [
 },
 {
   id:"ucla", name:"UCLA", place:"Los Angeles, CA", country:"US",
-  platform:"UC application", fee:"$95 if classified international (the domestic fee is reported as $80). Fee waivers are available.", feeUnv:true,
-  you:"UCLA defines an international student as someone who needs an F-1 visa. If that is you, you are international: no financial aid or scholarships for non-citizens and non-permanent-residents, nonresident tuition, and you must show about $80,739 in funds for Fall 2026. FAFSA and the CA Dream Act are unlikely to apply to you. If you are a US permanent resident, none of this applies. Confirm your classification with UCLA.",
+  platform:"UC application", fee:"$80 domestic fee per campus (reported by secondary sources; confirm on the UC application). Fee waivers are available.", feeUnv:true,
+  you:"As a US citizen you apply as a domestic applicant. You are eligible for FAFSA and need-based aid. California residents pay in-state tuition. If you live outside California you pay the nonresident rate, which depends on where you live and not on your citizenship. UCLA's page says an international student is someone who needs an F-1 visa, which doesn't apply to you. Residency rules were not confirmed.", youUnv:true,
   tests:"SAT/ACT not considered for admission or scholarships. AP/IB scores due July 15.",
-  docs:["Self-reported grades and courses (official transcripts only after admission)","Personal Insight Questions","UC minimums: 15 a-g courses; GPA at least 3.0 (3.4 for nonresidents)","Supplemental applications: Arts and Architecture, Music, Nursing, Theater/Film/TV (deadlines not found)"],
-  english:"Exempt if all of your high school was in English.",
-  url:"https://admission.ucla.edu/apply/international-applicants",
+  docs:["FAFSA (and Cal Grant GPA verification by Mar 2) for financial aid","Self-reported grades and courses (official transcripts only after admission)","Personal Insight Questions","UC minimums: 15 a-g courses; GPA at least 3.0 (3.4 for nonresidents)","Supplemental applications: Arts and Architecture, Music, Nursing, Theater/Film/TV (deadlines not found)"],
+  english:"Exempt if all of your high school was in English, which should apply to you.",
+  url:"https://admission.ucla.edu/apply/freshman",
   extra:"No early action or early decision.",
   deadlines:[
     {l:"UC application filing period closes", d:"2026-11-30"},
+    {l:"FAFSA / Cal Grant GPA verification", d:"2027-03-02"},
     {l:"Enrollment deposit and housing", d:"2027-05-01"},
     {l:"Final transcripts", d:"2027-07-01"},
     {l:"AP/IB scores", d:"2027-07-15"}
@@ -247,7 +248,7 @@ function render(){
     if (isOpen) {
       const c = el("div","detail");
       c.append(el("div","sub","Platform: "+s.platform));
-      const y = el("div","you"); y.append(el("b",null,"For you (Canadian citizen, US high school)"));
+      const y = el("div","you"); y.append(el("b",null,"For you (US and Canadian dual citizen)"));
       y.append(document.createTextNode(s.you));
       if (s.youUnv) y.append(" ", el("span","unv","partly unconfirmed"));
       c.append(y);

@@ -15,11 +15,11 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 - To preview locally: open `index.html` in a browser, or run `python3 -m http.server` in this folder.
 - To add a school: copy an object in `SCHOOLS`, edit it, commit and push to `main`. Pages redeploys automatically.
 
-## Applicant profile (set 2026-10-09)
-- Canadian citizen, US high school. Each school card has a blue "For you" box (the `you` field) on fee status, aid and tuition.
-- Canada: U of T and UBC give domestic status to Canadian citizens abroad (UBC unconfirmed); McGill would use the out-of-province Canadian rate.
-- US (Michigan, UCLA): a Canadian citizen who is not a US citizen or permanent resident, or who needs a visa, is likely international: no FAFSA or need-based aid, nonresident tuition. Red's actual US status was not given, so the page says to confirm with each school. If Red is a US permanent resident, update the `you` text and add back FAFSA dates (UCLA Mar 2, Michigan Early Decision aid Nov 15).
-- Removed as irrelevant for this profile: UBC International Scholars Program (Nov 15), McGill Quebec CEGEP dates, UCLA FAFSA/Cal Grant date.
+## Applicant profile (updated 2026-10-09)
+- US and Canadian dual citizen attending a US high school. Each school card has a blue "For you" box (the `you` field) on fee status, aid and tuition.
+- Canada: Canadian citizenship gives domestic status at U of T and UBC (UBC unconfirmed). McGill uses the out-of-province Canadian rate unless Red is a Quebec resident.
+- US (Michigan, UCLA): US citizenship means a domestic applicant, FAFSA and need-based aid eligibility, no international rules. In-state versus out-of-state tuition depends on Red's state of residence, which has not been given (the page says so).
+- History: the first version assumed a Canadian-only citizen who might be international at Michigan/UCLA. That text was removed when the dual citizenship was confirmed. UBC International Scholars Program, McGill Quebec CEGEP dates and the international fee notes stay out as irrelevant.
 
 ## Data notes (compiled 2026-10-09)
 - Core deadlines for McGill, U of T, UBC and UCLA were read from official pages.
