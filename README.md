@@ -58,7 +58,7 @@ The cloud session "Red makeover" pushed two near-duplicate redesigns: `claude/re
 
 ## Pre-vet (added 2026-10-09)
 Red wants to apply for pre-veterinary studies. Pre-vet is an advising track, not a major, at McGill, U of T, UBC and UCLA (the original four); none of them has its own vet school. The Fall 2027 additions are covered in the next section (Guelph and Calgary are tied to vet schools). Each school's section now has a green "Pre-vet studies" box (the `PREVET` object in the script) with the program to apply to, notes, shared "vet school basics" (`PREVET_BASICS`) and a link. Each checklist also ends with a step to choose the pre-vet route.
-- McGill: Macdonald Campus, B.Sc.(Agr. & Env. Sc.), Major in Life Sciences, Animal Health and Disease specialization (name unconfirmed). The only dedicated pre-vet pathway of the five.
+- McGill: Faculty of Science, B.Sc. Major in Biology (changed from the Macdonald Campus on 2026-10-09 at the owner's request). The Macdonald route (B.Sc.(Agr. & Env. Sc.) Life Sciences, Animal Health and Disease specialization, with Edinburgh/Ross/St. Matthew's agreements) stays as a small italic note (`alt` field in `PREVET`). The Biology Major's credit count and Freshman-year details are unconfirmed (catalogue pages would not load).
 - U of T: Arts & Science, Life Sciences. No official pre-vet track found.
 - UBC: Land and Food Systems, B.Sc. Applied Biology, Applied Animal Biology (prepares for WCVM).
 - UCLA: Letters & Science, a life sciences major or undeclared.

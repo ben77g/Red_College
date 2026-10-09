@@ -282,6 +282,7 @@
     background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%2230%22 viewBox=%220 0 150 30%22%3E%3Crect width=%22150%22 height=%2230%22 fill=%22%23ffd400%22/%3E%3Ctext x=%228%22 y=%2221%22 font-family=%22Arial Black, Impact, Arial, Helvetica, sans-serif%22 font-weight=%22900%22 font-size=%2216%22 letter-spacing=%222%22 fill=%22%23111%22%3ECAUTION%3C/text%3E%3Cpath d=%22M127 -1 L137 31%22 stroke=%22%23111%22 stroke-width=%225%22/%3E%3C/svg%3E") repeat-x 0 0 / auto 100%; border-top:1.5px solid #8a7000; border-bottom:1.5px solid #8a7000; box-sizing:content-box; }
   .caution-sign { display:inline-block; width:.8em; height:.74em; margin-left:.35em; vertical-align:-.05em; filter:drop-shadow(0 1px 0 rgba(0,0,0,.25)); }
   .caution-sign svg { display:block; width:100%; height:100%; }
+  .prevet .alt { margin:6px 0 10px; padding:7px 10px; font-size:12.5px; border-left:4px solid #7fc77a; background:rgba(127,199,122,.12); border-radius:0 8px 8px 0; font-style:italic; }
 </style>
 </head>
 <body class="locked">
@@ -392,7 +393,7 @@ const SCHOOLS = [
   platform:"McGill online application (Applicant Portal for documents)", fee:"CAD 140.16, non-refundable",
   you:"You apply in the \"U.S. high school applicants\" group. Your situation looks like Quebec government \"Situation 8\": a Canadian citizen living in Canada for the first time, who takes up residence in Quebec. If you qualify you pay the Quebec resident rate (about $103.92 per credit in 2026-27) instead of the out-of-province Canadian rate (about $432.85 per credit for students first enrolled in 2024-25; the newer rate was not confirmed). Required proof: Canadian citizenship, a sworn statement, proof of your activities for the 10 years before arriving (or since birth if shorter), and proof of 3 months of Quebec residence. You can't show the 3 months before you arrive, so expect to be billed at the higher rate first and reassessed after arrival. Not confirmed: McGill's text has no exclusion for students living in Quebec only to study, but ask McGill Student Accounts to confirm before relying on it. Your parents' California address rules out Situation 5.", youUnv:true,
   tests:"SAT (code 0935-00) or ACT (code 5231) are optional for most programs for Fall 2027. Some programs need extras such as CASPer or a personal statement.",
-  docs:["Self-report grades from grades 10 to 12 (window Nov 15, 2026 to Mar 1, 2027)","Official supporting documents due Mar 1","For Quebec resident tuition: citizenship proof, sworn statement, 10-year activity history, 3 months of Quebec residence (McGill Situation 8)","AP exams can earn advanced-standing credit based on final results (unconfirmed)","Nursing, Music, Education, Social Work have program extras"],
+  docs:["Self-report grades from grades 10 to 12 (window Nov 15, 2026 to Mar 1, 2027)","Official supporting documents due Mar 1","Science (Biology major): pre-calculus plus two of biology, chemistry or physics","For Quebec resident tuition: citizenship proof, sworn statement, 10-year activity history, 3 months of Quebec residence (McGill Situation 8)","AP exams can earn advanced-standing credit based on final results (unconfirmed)","Nursing, Music, Education, Social Work have program extras"],
   docsUnv:false,
   url:"https://www.mcgill.ca/undergraduate-admissions/apply/requirements/us",
   extra:"Quebec residency rules: https://www.mcgill.ca/legaldocuments/quebec/situation8",
@@ -734,13 +735,10 @@ const PREVET_BASICS = [
 ];
 const PREVET = {
   mcgill:{
-    apply:"Faculty of Agricultural & Environmental Sciences (Macdonald Campus): B.Sc.(Agr. & Env. Sc.), Major in Life Sciences.",
-    notes:["Pick the Animal Health and Disease specialization after first year (McGill's page calls it \"Animal Biology and Health\", so confirm the name).",
-      "McGill has no vet school and does not guarantee admission to one. The program says it can help meet the 500 hours of livestock experience that Universite de Montreal's farm-animal category wants.",
-      "Recommended courses: genetics, microbiology, biochemistry, animal and mammalian physiology, immunology.",
-      "Agreements with Caribbean vet schools (Ross, St. Matthew's) offer guaranteed interviews or reserved spots.",
-      "Students entering from outside Quebec may do a 30-credit foundation year first (unconfirmed)."],
-    unv:true, url:"https://www.mcgill.ca/animal/undergraduate-programs"
+    apply:"Faculty of Science (downtown Montreal campus): B.Sc. Major in Biology. On the application you choose a Program Group (Biological, Biomedical and Life Sciences), which decides which Science programs you can pick later.",
+    notes:["Science prerequisites for US applicants: pre-calculus and two of biology, chemistry or physics. Grades 10 to 12 are considered, and SAT/ACT is optional.","Typical admits to this group have a B+ to A- unweighted average in grades 11 and 12 and an A- in each prerequisite math and science course (typical figures, not minimums).","The Biology Major was 59 credits in the catalogues I could read, so confirm the current figure. US applicants most likely enter a four-year, 120-credit path that starts with a Freshman year, and AP results can give advanced standing (both unconfirmed).","McGill has no vet school and does not guarantee admission to one. I found no Faculty of Science page on pre-vet advising (Science advising is SOUSA). Check each target vet school's prerequisites yourself, since organic chemistry and physics may need to be added."],
+    alt:"Macdonald Campus option: the B.Sc.(Agr. & Env. Sc.) Life Sciences major with the Animal Health and Disease specialization (called \"Animal Biology and Health\" on McGill's Animal Science page) is the route McGill promotes for pre-vet. It has animal-focused courses and agreements with Edinburgh (guaranteed interview, 3.4 GPA), Ross and St. Matthew's (4 spots each per cycle). It also helps build the 500 hours of livestock experience that Universite de Montreal asks for. It is on the Macdonald Campus in Sainte-Anne-de-Bellevue.",
+    unv:true, url:"https://www.mcgill.ca/undergraduate-admissions/apply/requirements/us"
   },
   uoft:{
     apply:"Faculty of Arts & Science, Life Sciences admission category. You choose a program after first year.",
@@ -800,7 +798,7 @@ const BRAND = {
 
 /* Optional application checklist per school. Saved in this browser (localStorage). It does not move the progress bar. */
 const TASKS = {
-  mcgill:["Create the McGill application account","Self-report grades 10 to 12 (opens Nov 15)","Decide whether to send SAT/ACT (optional)","Program extras if needed (CASPer, statement)","Submit application and fee (Jan 15)","Entrance scholarship application (Jan 21)","Submit supporting documents (Mar 1)","Gather Quebec resident tuition proof (Situation 8)","Choose the Macdonald Campus Life Sciences major (pre-vet route)"],
+  mcgill:["Create the McGill application account","Self-report grades 10 to 12 (opens Nov 15)","Decide whether to send SAT/ACT (optional)","Program extras if needed (CASPer, statement)","Submit application and fee (Jan 15)","Entrance scholarship application (Jan 21)","Submit supporting documents (Mar 1)","Gather Quebec resident tuition proof (Situation 8)","Choose the Faculty of Science, B.Sc. Biology major (pre-vet route)"],
   uoft:["Create the OUAC account","Send SAT/AP scores if submitting (Engineering needs all scores)","Engineering profile or Music questionnaire if needed (Jan 15)","Architecture, Rotman or Computer Science supplemental if needed (Feb 1)","Submit OUAC application (Jan 15, or early by Nov 7)","Send documents (Dec 1 if early, otherwise by Jan 15 to Feb 1)","Residence application (Mar 31)","Choose Arts & Science, Life Sciences (pre-vet route)"],
   ubc:["Create the UBC application account","Write the personal profile essays","Submit application (Dec 1 for early and scholarships, Jan 15 final)","Send transcripts and documents","Accept offer and apply for housing (May 1)","Choose Land and Food Systems, Applied Animal Biology (pre-vet route)"],
   ucla:["Start the UC application","Write the Personal Insight Questions","Submit application by Nov 30","Supplemental application if needed (Arts, Music, Nursing, TFT)","File FAFSA and verify GPA for Cal Grant (Mar 2)","Send AP/IB scores (Jul 15) and final transcript (Jul 1)","Choose a life sciences major in Letters & Science (pre-vet route)"],
@@ -1079,6 +1077,7 @@ function render(){
         const p1 = el("p",null,"Apply to: "+pv.apply); p1.style.margin="4px 0";
         box.append(p1);
         const pul = el("ul"); pv.notes.forEach(n=>pul.append(el("li",null,n))); box.append(pul);
+        if (pv.alt) { const al = el("p","alt",pv.alt); box.append(al); }
         box.append(el("b",null,"Vet school basics"));
         const bul = el("ul"); PREVET_BASICS.forEach(n=>bul.append(el("li",null,n))); box.append(bul);
         if (pv.unv) box.append(el("span","unv","Partly unconfirmed. Check each school's page. "));
