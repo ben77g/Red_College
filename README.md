@@ -1,19 +1,30 @@
 # Red_College ("Red's")
 
-A static dashboard of first-year undergrad application deadlines and requirements, written for one applicant profile: a Canadian citizen attending a US high school (US curriculum, AP, SAT/ACT available).
-Live site (GitHub Pages): https://deadlines.chickenkiller.com/ (custom domain via FreeDNS CNAME to ben77g.github.io; also https://ben77g.github.io/Red_College/)
+A static dashboard of first-year undergrad application deadlines and requirements for ONE applicant ("Red"): a US and Canadian dual citizen, California resident, attending a US high school (US curriculum, AP, SAT/ACT available), who has never lived in Canada and wants to study pre-veterinary. Fall 2027 entry.
+Live site (GitHub Pages): https://deadlines.chickenkiller.com/ (custom domain; also https://ben77g.github.io/Red_College/). It is behind a joke password gate (see below).
+
+## Quick start for a future session
+- Edit `index.html` (everything lives there) and push to `main`; GitHub Pages redeploys in about a minute. Repo: https://github.com/ben77g/Red_College (public).
+- The border is generated: edit `make_frame.py`, run `python3 make_frame.py`, never hand-edit the frame CSS.
+- To check your changes, render with headless chromium (see "Testing" below), then read the result. Do not just assume.
+- The owner told us to stop messaging cloud sessions ("Red makeover" was the one used). Do not start or message cloud sessions unless the owner asks again.
+
+## Deployment and ops
+- Pages serves the `main` branch root. The `CNAME` file holds `deadlines.chickenkiller.com`. DNS is a FreeDNS CNAME record (`deadlines` -> `ben77g.github.io`); the path `/Red_College` is not part of the DNS record, GitHub maps the custom domain to this repo.
+- HTTPS: on 2026-10-09 GitHub's certificate for the custom domain was still "new" after about 30 minutes, so "Enforce HTTPS" could not be turned on. Check with `gh api repos/ben77g/Red_College/pages`; when `https_certificate.state` is approved, run `gh api -X PUT repos/ben77g/Red_College/pages -F https_enforced=true`. If stuck for hours: remove and re-add the custom domain; shared FreeDNS domains can hit Let's Encrypt rate limits.
+- Git identity in this repo is local config only: name `chel`, email `ben77g@users.noreply.github.com` (the owner asked to keep their real email out of history; the first commit was rewritten for that).
 
 ## Current schools (Fall 2027 entry)
 McGill, University of Toronto (St. George), UBC Vancouver, UCLA, plus (added 2026-10-09) Dalhousie, McMaster, Guelph, University of Alberta, UVic, University of Calgary and SFU. To add a school: add an object to `SCHOOLS`, and entries with the same id in `BRAND` (icon colors), `TARGETS` (progress bar date), `TASKS` (checklist) and `PREVET` (pre-vet box).
 
 ## How it works
 - Everything is in one file, `index.html` (no build step, no dependencies).
-- School data is the `SCHOOLS` array near the bottom of the file. Each school has deadlines (`l` label, `d` ISO date, `u:1` if unconfirmed), fee, test policy, documents and an official URL.
+- School data is the `SCHOOLS` array in the script. Each school has deadlines (`l` label, `d` ISO date, `u:1` if unconfirmed), fee, test policy, documents and an official URL.
 - Layout: deadlines list on the left (all upcoming deadlines across schools, with days left; clicking one opens that school), school icons on the right. Clicking an icon expands it to full width and shows its details (deadlines, fee, tests, documents, a "For you" box). Click again to close. Stacks to one column on narrow screens.
 - Icons are colored monogram badges (the `BRAND` object in the script), not official logos. Add an entry there for each new school id.
 - No visible header/title banner (removed on request); a visually hidden h1 stays for screen readers.
 - Theme: girly and frilly. Pink background with faint hearts and dots, script headings (Parisienne) with a drawn bow, Nunito body text, ribbon-labelled intro cards, calendar-leaf date chips in the deadlines list with urgency-coloured day counts (pink, gold under 30 days, hot pink under 14), glossy monogram badges, and a round close button on an open school. Fonts load from Google Fonts and fall back to system fonts offline. All CSS is in the `<style>` block; small icons (bow, heart, search, star) are inline SVG data URIs.
-- Progress bar: each opened school has a meadow scene (`progressBlock`): a sky with drifting clouds, a sun that shows the percent, an "Aug 1" signpost on the left, a rainbow and a pink flag with the deadline date on the right, two-tone grass with tufts and flowers, and a trotting pink unicorn with a rainbow mane and tail (`UNICORN_SVG`, legs animate unless the OS asks for reduced motion). The grass behind the unicorn is darker (the time already used). The bar is TIME based: it fills from `SEASON_START` (Aug 1, 2026, when Common App and the UC application open) to the school's target date in `TARGETS` (McGill, U of T, UBC Jan 15, 2027; Michigan Regular Decision Feb 1, 2027; UCLA Nov 30, 2026). The unicorn moves right as the deadline gets closer, and it is computed from today's date when the page loads. Change a target in `TARGETS`, or use a different start by editing `SEASON_START`. Below the bar is an optional personal checklist (`TASKS`, saved in this browser's localStorage as `red_tasks_v1`) with heart-shaped checkboxes and its own small pink bar; it does not move the unicorn.
+- Progress bar: each opened school has a meadow scene (`progressBlock`): a sky with drifting clouds, a sun that shows the percent, an "Aug 1" signpost on the left, a rainbow and a pink flag with the deadline date on the right, two-tone grass with tufts and flowers, and a trotting pink unicorn with a rainbow mane and tail (`UNICORN_SVG`, legs animate unless the OS asks for reduced motion). The grass behind the unicorn is darker (the time already used). The bar is TIME based: it fills from `SEASON_START` (Aug 1, 2026, when Common App and the UC application open) to the school's target date in `TARGETS` (see the `TARGETS` object: McGill, U of T, UBC, McMaster and Guelph Jan 15, 2027; UVic and SFU Jan 31; Alberta and Calgary Mar 1; Dalhousie Mar 15; UCLA Nov 30, 2026; several of these are unconfirmed). The unicorn moves right as the deadline gets closer, and it is computed from today's date when the page loads. Change a target in `TARGETS`, or use a different start by editing `SEASON_START`. Below the bar is an optional personal checklist (`TASKS`, saved in this browser's localStorage as `red_tasks_v1`) with heart-shaped checkboxes and its own small pink bar; it does not move the unicorn.
 - Password gate: a big green dragon fills the screen with the password box in its mouth (`#gate` in the HTML, `PASSWORD` constant in the last script). The dragon has shaded skin with a scale pattern, glowing eyes that blink, smoke puffs from its nostrils and a slow breathing motion; behind it a crescent moon, twinkling stars and dark hills. A wrong password shakes the dragon. A right one (not case sensitive) makes the dragon rumble, fire bursts out of its mouth and floods the screen, then the site appears. The unlock is remembered per browser tab (sessionStorage `red_unlocked`), so a refresh does not ask again, but a new tab or visit does. NOT secure: the password is plain text in index.html and the page content is in the public repo. It only stops casual visitors.
 - Border: a fixed `#frame` element draws a detailed white picture frame with carved acanthus leaf molding. From the outside in: a bright fillet, a bead-and-reel row (pearls with little reels), the acanthus band (a shaded hollow with serrated, veined leaves whose tips fold over, gold darts between them), an egg-and-dart band, a gold fillet, a row of small pearls and a cove that darkens toward the page. The bands are mitered at the corners under a raised corner block holding a 16-petal rosette with four acanthus leaves and a gold boss. It is a 3x3 SVG used as a CSS `border-image`, inlined as a data URI in the `<style>` block. **Generated by `make_frame.py`** (run `python3 make_frame.py` in this folder: it rewrites `frame.svg` and the frame CSS in `index.html`; edit the drawing functions there, not the CSS). The leaf is built from lists of tooth-tip coordinates (`LOBES`, `EYES`) and drawn once in `<defs>`, then stamped with `<use>`, which keeps the data URI small enough for browsers to accept (about 36 KB; Chrome ignored a 400 KB one). Cells are 96 SVG units; on screen the width is the `--frame` variable (34px, 19px on phones). Body padding matches it so content never sits under the frame. History: replaced a gold-and-rose macrame border, then a pearl-and-scallop white frame (both in git history).
 - Each closed school icon has a small pink checklist bar under it (`miniBar`) showing how many checklist steps are ticked (for example "3 of 6 steps"). It reads the same saved ticks as the checklist inside the open school, and updates when the icon closes. It is hidden while the school is open because the full checklist bar is shown there.
@@ -35,15 +46,18 @@ McGill, University of Toronto (St. George), UBC Vancouver, UCLA, plus (added 202
 - Not covered: UTSC/UTM specific dates, UCLA supplemental application deadlines, IB/AP and Canadian-curriculum details, program extras at McGill and UBC.
 - Dates change every cycle. Re-check official pages and update before relying on them.
 
-## Gaps / todo
-- Verify the unconfirmed items above against official pages.
-- Add more schools.
+## Known gaps / todo (as of 2026-10-09)
+- Verify unconfirmed items against official pages (they are marked "unconfirmed" on the site). Biggest: Fall 2027 deadlines for Dalhousie, McMaster, Guelph and Alberta (these four schools show the caution tape); domestic-tuition status of a Canadian citizen living in the US for most Canadian schools; fees.
+- Not researched: UTSC/UTM dates, UCLA supplemental application deadlines, program-specific deadlines, IB/AP details at several schools, WCVM/UCVM exact residency tests.
+- The HTTPS item above.
+- Dates change every cycle; the whole data set is for Fall 2027 entry and was compiled on 2026-10-09 by web research (Indie agent), partly from search snippets. Treat it as a starting point.
+- The two cloud-session branches still exist on GitHub (see Merge note).
 
 ## Merge note (2026-10-09)
 The cloud session "Red makeover" pushed two near-duplicate redesigns: `claude/red-gui-makeover-aml1se` (44e6406) and `claude/red-gui-redesign-t1tqmr` (f651016). They conflicted on every file, so `main` records both as merged but the site content is the later one (f651016). The earlier branch's content was not kept where it differed. Both branches still exist on GitHub.
 
 ## Pre-vet (added 2026-10-09)
-Red wants to apply for pre-veterinary studies. Pre-vet is an advising track, not a major, at all five schools, and none has its own vet school. Each school's section now has a green "Pre-vet studies" box (the `PREVET` object in the script) with the program to apply to, notes, shared "vet school basics" (`PREVET_BASICS`) and a link. Each checklist also ends with a step to choose the pre-vet route.
+Red wants to apply for pre-veterinary studies. Pre-vet is an advising track, not a major, at McGill, U of T, UBC and UCLA (the original four); none of them has its own vet school. The Fall 2027 additions are covered in the next section (Guelph and Calgary are tied to vet schools). Each school's section now has a green "Pre-vet studies" box (the `PREVET` object in the script) with the program to apply to, notes, shared "vet school basics" (`PREVET_BASICS`) and a link. Each checklist also ends with a step to choose the pre-vet route.
 - McGill: Macdonald Campus, B.Sc.(Agr. & Env. Sc.), Major in Life Sciences, Animal Health and Disease specialization (name unconfirmed). The only dedicated pre-vet pathway of the five.
 - U of T: Arts & Science, Life Sciences. No official pre-vet track found.
 - UBC: Land and Food Systems, B.Sc. Applied Biology, Applied Animal Biology (prepares for WCVM).
@@ -60,3 +74,9 @@ Dalhousie, McMaster, Guelph, Alberta, UVic, Calgary and SFU were added for the p
 
 ## Michigan removed (2026-10-09)
 The University of Michigan was dropped from the site on request (its school entry, icon, checklist, progress target and pre-vet box). It can be restored from git history (commits before this one).
+
+## Testing (how changes were checked)
+No test suite. Render with headless chromium on NixOS (it is installed as `chromium`), for example:
+`chromium --headless --no-sandbox --disable-gpu --virtual-time-budget=3000 --screenshot=/tmp/shot.png --window-size=1300,1300 file:///path/to/copy.html`
+Make a temp copy of `index.html` first: remove `class="locked"` from `<body>` and hide the gate (`style="display:none"` on `#gate`) to skip the password, and change `let openId = null;` to a school id to render it open. Add `--enable-logging=stderr --dump-dom` and grep for `Uncaught` to catch script errors. Screenshots of the final page were sent to the owner because the assistant cannot view images itself.
+Lessons: a Chrome `border-image` data URI of about 400 KB is silently ignored (keep the frame SVG small by defining the leaf once and using `<use>`); umich.edu blocked page fetches during research.
