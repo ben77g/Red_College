@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Red's College Dashboard</title>
+<style>
+  :root { --red:#b3201f; --bg:#f6f4f2; --card:#fff; --ink:#1d1d1f; --mute:#6b6b70; --line:#e3e0dc; --ok:#1f7a3d; --warn:#b36b00; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--red); color:#fff; padding:28px 20px; }
+  header h1 { margin:0 0 4px; font-size:26px; }
+  header p { margin:0; opacity:.9; }
+  main { max-width:1100px; margin:0 auto; padding:20px; }
+  h2 { margin:28px 0 10px; font-size:19px; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px; }
+  .controls input, .controls select { padding:8px 10px; border:1px solid var(--line); border-radius:8px; font:inherit; background:#fff; }
+  .controls input { flex:1; min-width:180px; }
+  .upcoming { background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .row { display:grid; grid-template-columns:110px 1fr 90px; gap:12px; padding:10px 14px; border-top:1px solid var(--line); align-items:center; }
+  .row:first-child { border-top:0; }
+  .row .when { font-weight:600; }
+  .row .school { color:var(--mute); font-size:13px; }
+  .days { text-align:right; font-weight:600; color:var(--red); }
+  .days.past { color:var(--mute); font-weight:400; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(480px,1fr)); gap:16px; }
+  @media (max-width:560px){ .grid { grid-template-columns:1fr; } .row { grid-template-columns:90px 1fr 60px; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .card h3 { margin:0; font-size:19px; }
+  .sub { color:var(--mute); font-size:13px; margin-bottom:10px; }
+  .tag { display:inline-block; font-size:11px; padding:1px 8px; border-radius:99px; border:1px solid var(--line); margin-left:6px; vertical-align:middle; }
+  .tag.ca { color:#a1161a; border-color:#e8b9ba; } .tag.us { color:#1f4e9c; border-color:#b8c9e8; }
+  .card h4 { margin:14px 0 4px; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--mute); }
+  ul { margin:0; padding-left:18px; } li { margin:2px 0; }
+  .dl { display:flex; justify-content:space-between; gap:10px; padding:3px 0; border-bottom:1px dashed var(--line); }
+  .dl:last-child { border-bottom:0; }
+  .dl span:first-child { flex:1; }
+  .dl .d { white-space:nowrap; font-weight:600; }
+  .unv { color:var(--warn); font-size:12px; }
+  a { color:var(--red); }
+  footer { color:var(--mute); font-size:13px; padding:10px 20px 40px; max-width:1100px; margin:0 auto; }
+  .note { background:#fff7e6; border:1px solid #f0d9a8; border-radius:10px; padding:10px 14px; font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Red's College Dashboard</h1>
+  <p>First-year application deadlines and requirements, Fall 2027 entry (US and Canada)</p>
+</header>
+<main>
+  <div class="note">Compiled from official school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date.</div>
+
+  <h2>Next deadlines</h2>
+  <div class="controls">
+    <select id="country"><option value="all">US and Canada</option><option value="CA">Canada</option><option value="US">US</option></select>
+    <input id="q" type="search" placeholder="Search schools, platforms, requirements">
+  </div>
+  <div class="upcoming" id="upcoming"></div>
+
+  <h2>Schools</h2>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>Built for Red's. Data lives in the <code>SCHOOLS</code> array in index.html. Last updated 2026-10-09.</footer>
+
+<script>
+const SCHOOLS = [
+{
+  id:"mcgill", name:"McGill University", place:"Montreal, QC", country:"CA",
+  platform:"McGill online application (Applicant Portal for documents)", fee:"CAD 140.16, non-refundable",
+  tests:"SAT/ACT optional for US applicants in Arts, Engineering, Science, Management, Nursing and Education (opting out may delay the decision, with no other disadvantage).",
+  docs:["Transcripts (US grades self-reported Nov 15 to Mar 1, official elsewhere)","Program extras for Nursing, Music, Education, Social Work (language tests, statements, recommendations)"],
+  english:"About IELTS 6.5 / TOEFL 90 / Duolingo 125 (Commerce TOEFL 100)", englishUnv:true,
+  url:"https://www.mcgill.ca/undergraduate-admissions/apply",
+  deadlines:[
+    {l:"Application (outside Quebec, incl. US)", d:"2027-01-15"},
+    {l:"Entrance scholarship application", d:"2027-01-21"},
+    {l:"US high-school documents", d:"2027-03-01"},
+    {l:"Quebec CEGEP/high-school application", d:"2027-03-01", u:1}
+  ]
+},
+{
+  id:"uoft", name:"University of Toronto (St. George)", place:"Toronto, ON", country:"CA",
+  platform:"OUAC (Ontario Universities' Application Centre)", fee:"Unconfirmed for 2027. Check OUAC.", feeUnv:true,
+  tests:"SAT/ACT not required for standard international qualifications (secondary source).", testsUnv:true,
+  docs:["Grades and documents per your curriculum, due Jan 15 to Feb 1","Engineering: Online Student Profile (Jan 15)","Music questionnaire (Jan 15)","Architecture: One Idea (Feb 1)","Rotman Commerce and Computer Science supplementals (Feb 1)"],
+  english:"IELTS 6.5 (no band under 6.0) or TOEFL iBT 89 (22+ in Writing and Speaking)", englishUnv:true,
+  url:"https://future.utoronto.ca/apply/important-application-dates",
+  extra:"UTSC and UTM: assume the same OUAC dates, but verify.",
+  deadlines:[
+    {l:"Recommended early application", d:"2026-11-07"},
+    {l:"Early applicant documents", d:"2026-12-01"},
+    {l:"Final application deadline (most programs)", d:"2027-01-15"},
+    {l:"Engineering profile and Music questionnaire", d:"2027-01-15"},
+    {l:"Architecture, Rotman Commerce, Computer Science supplementals", d:"2027-02-01"},
+    {l:"Residence application", d:"2027-03-31"}
+  ]
+},
+{
+  id:"ubc", name:"University of British Columbia (Vancouver)", place:"Vancouver, BC", country:"CA",
+  platform:"UBC online application", fee:"CAD 78.50 (Canadian/PR), CAD 173.25 (study permit)",
+  tests:"SAT/ACT optional for American-curriculum applicants (from a 2021 UBC item, not re-verified).", testsUnv:true,
+  docs:["Personal profile: short essays of 50 to 500 words each (also used for scholarships)","Transcripts and curriculum documents requested after applying (due Jan 31 to May 31)"],
+  english:"UBC English Language Admissions Standard (IELTS, TOEFL, PTE and others). Minimums not verified.", englishUnv:true,
+  url:"https://you.ubc.ca/applying-ubc/dates-deadlines/",
+  deadlines:[
+    {l:"International Scholars Program awards", d:"2026-11-15"},
+    {l:"Early application", d:"2026-12-01", u:1},
+    {l:"Nursing, Pharmacy, Law applications; Presidential/Centennial/Beyond Tomorrow awards", d:"2026-12-01"},
+    {l:"Midwifery", d:"2026-12-05"},
+    {l:"Final application deadline", d:"2027-01-15"},
+    {l:"Offer acceptance and housing guarantee", d:"2027-05-01"}
+  ]
+},
+{
+  id:"umich", name:"University of Michigan", place:"Ann Arbor, MI", country:"US",
+  platform:"Common App plus U-M essay responses", fee:"$75", feeUnv:true,
+  tests:"Test-optional for 2027. AP/IB results are considered in context. Scores due with the application round if you submit them.",
+  docs:["Common App","High-school transcript","Counselor and teacher recommendations (not confirmed)","School-specific extras (engineering, music and others) not confirmed"],
+  english:"Not confirmed (umich.edu blocked verification).", englishUnv:true,
+  url:"https://admissions.umich.edu/apply/first-year-applicants/requirements-deadlines",
+  extra:"Deadlines came mostly from secondary pages. Early Decision (binding) is new this cycle.",
+  deadlines:[
+    {l:"Early Decision and Early Action application", d:"2026-11-01", u:1},
+    {l:"Early Decision financial aid", d:"2026-11-15", u:1},
+    {l:"Early Decision commitment", d:"2027-01-06", u:1},
+    {l:"Regular Decision", d:"2027-02-01", u:1}
+  ]
+},
+{
+  id:"ucla", name:"UCLA", place:"Los Angeles, CA", country:"US",
+  platform:"UC application", fee:"$80 (US residents), $95 (international). Fee waivers available.", feeUnv:true,
+  tests:"SAT/ACT not considered for admission or scholarships. AP/IB scores due July 15.",
+  docs:["Self-reported grades and courses (official transcripts only after admission)","Personal Insight Questions","UC minimums: 15 a-g courses; GPA at least 3.0 (3.4 for nonresidents)","Supplemental applications: Arts and Architecture, Music, Nursing, Theater/Film/TV (deadlines not found)"],
+  english:"For applicants with little English instruction: competitive TOEFL 100, IELTS 7.5, Duolingo 135. Official minimums may be lower.", englishUnv:true,
+  url:"https://admission.ucla.edu/apply/freshman",
+  extra:"No early action or early decision.",
+  deadlines:[
+    {l:"UC application filing period closes", d:"2026-11-30"},
+    {l:"FAFSA / Dream Act / Cal Grant GPA verification", d:"2027-03-02"},
+    {l:"Enrollment deposit and housing", d:"2027-05-01"},
+    {l:"Final transcripts", d:"2027-07-01"},
+    {l:"AP/IB scores", d:"2027-07-15"}
+  ]
+}
+];
+
+const today = new Date(); today.setHours(0,0,0,0);
+const fmt = iso => new Date(iso+"T00:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+const daysTo = iso => Math.round((new Date(iso+"T00:00:00") - today)/86400000);
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e; }
+
+function matches(s){
+  const c = document.getElementById("country").value;
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  if (c!=="all" && s.country!==c) return false;
+  if (!q) return true;
+  return JSON.stringify(s).toLowerCase().includes(q);
+}
+
+function render(){
+  const list = SCHOOLS.filter(matches);
+
+  const up = document.getElementById("upcoming"); up.replaceChildren();
+  const all = [];
+  list.forEach(s => s.deadlines.forEach(d => all.push({...d, school:s.name})));
+  all.sort((a,b)=>a.d.localeCompare(b.d));
+  const future = all.filter(x=>daysTo(x.d)>=0).slice(0,12);
+  if (!future.length) up.append(el("div","row","No upcoming deadlines match."));
+  future.forEach(x => {
+    const r = el("div","row");
+    r.append(el("div","when",fmt(x.d)));
+    const mid = el("div"); mid.append(el("div","",x.l + (x.u?" (unconfirmed)":"")), el("div","school",x.school));
+    r.append(mid);
+    const n = daysTo(x.d);
+    r.append(el("div","days", n===0?"Today":n+"d"));
+    up.append(r);
+  });
+
+  const g = document.getElementById("grid"); g.replaceChildren();
+  list.forEach(s => {
+    const c = el("div","card");
+    const h = el("h3",null,s.name);
+    h.append(el("span","tag "+s.country.toLowerCase(), s.country==="CA"?"Canada":"US"));
+    c.append(h, el("div","sub",s.place+" | "+s.platform));
+
+    c.append(el("h4",null,"Deadlines"));
+    s.deadlines.forEach(d => {
+      const r = el("div","dl");
+      const left = el("span",null,d.l);
+      if (d.u) left.append(" ", el("span","unv","unconfirmed"));
+      r.append(left, el("span","d",fmt(d.d)));
+      c.append(r);
+    });
+
+    const line = (title, text, unv) => {
+      c.append(el("h4",null,title));
+      const p = el("div",null,text);
+      if (unv) p.append(" ", el("span","unv","unconfirmed"));
+      c.append(p);
+    };
+    line("Application fee", s.fee, s.feeUnv);
+    line("Standardized tests", s.tests, s.testsUnv);
+    c.append(el("h4",null,"Documents and extras"));
+    const ul = el("ul"); s.docs.forEach(d=>ul.append(el("li",null,d))); c.append(ul);
+    line("English proficiency (international)", s.english, s.englishUnv);
+    if (s.extra) line("Notes", s.extra);
+    const a = el("a",null,"Official admissions page"); a.href=s.url; a.target="_blank"; a.rel="noopener";
+    const p = el("p"); p.append(a); c.append(p);
+    g.append(c);
+  });
+}
+document.getElementById("country").addEventListener("change",render);
+document.getElementById("q").addEventListener("input",render);
+render();
+</script>
+</body>
+</html>
