@@ -219,9 +219,10 @@
   @keyframes ember { 0%{opacity:0;transform:translate(0,0) scale(1)} 15%{opacity:.95} 100%{opacity:0;transform:translate(8px,-70px) scale(.3)} }
   @keyframes lightflick { 0%,100%{opacity:1} 18%{opacity:.86} 40%{opacity:.97} 62%{opacity:.82} 80%{opacity:.95} }
   /* firelight on the dragon: it is dim, with warm light catching its two sides */
-  .dragon .rim { position:absolute; inset:-4%; pointer-events:none; mix-blend-mode:screen; z-index:1; }
-  .dragon .rim.l { background:radial-gradient(ellipse 36% 52% at 0% 40%, rgba(255,150,60,.3), rgba(255,110,30,.1) 55%, transparent 80%); }
-  .dragon .rim.r { background:radial-gradient(ellipse 36% 52% at 100% 40%, rgba(255,150,60,.3), rgba(255,110,30,.1) 55%, transparent 80%); }
+  /* firelight boxes are much bigger than the figure and each glow fades out well inside its box, so no hard orange edge can show */
+  .dragon .rim { position:absolute; left:-60%; right:-60%; top:-20%; bottom:-20%; pointer-events:none; mix-blend-mode:screen; z-index:1; }
+  .dragon .rim.l { background:radial-gradient(ellipse 17% 36% at 27.3% 42.9%, rgba(255,150,60,.3), rgba(255,110,30,.1) 55%, rgba(255,110,30,0) 100%); }
+  .dragon .rim.r { background:radial-gradient(ellipse 17% 36% at 72.7% 42.9%, rgba(255,150,60,.3), rgba(255,110,30,.1) 55%, rgba(255,110,30,0) 100%); }
   #gate .dragon svg { filter:brightness(.55) contrast(1.08) drop-shadow(0 18px 22px rgba(0,0,0,.8)); }
   @media (max-width:700px) { .torch { transform:scale(.75); transform-origin:50% 0; } #gate { --ty:30vh; } }
 
