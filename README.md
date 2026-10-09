@@ -8,7 +8,7 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 
 ## How it works
 - Everything is in one file, `index.html` (no build step, no dependencies).
-- School data is the `SCHOOLS` array near the bottom of the file. Each school has deadlines (`l` label, `d` ISO date, `u:1` if unconfirmed), fee, test policy, documents, English requirement and an official URL.
+- School data is the `SCHOOLS` array near the bottom of the file. Each school has deadlines (`l` label, `d` ISO date, `u:1` if unconfirmed), fee, test policy, documents and an official URL.
 - Layout: deadlines list on the left (all upcoming deadlines across schools, with days left; clicking one opens that school), school icons on the right. Clicking an icon expands it to full width and shows its details (deadlines, fee, tests, documents, English, a "For you" box). Click again to close. Stacks to one column on narrow screens.
 - Icons are colored monogram badges (the `BRAND` object in the script), not official logos. Add an entry there for each new school id.
 - No visible header/title banner (removed on request); a visually hidden h1 stays for screen readers.
@@ -29,7 +29,8 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 ## Data notes (compiled 2026-10-09)
 - Core deadlines for McGill, U of T, UBC and UCLA were read from official pages.
 - Michigan deadlines and the fee came mostly from secondary pages (umich.edu blocked the fetch). Marked unconfirmed on the site.
-- Unconfirmed: U of T fee and OUAC form/codes, UCLA and Michigan fees, English exemption wording for U of T and UBC, Michigan English exemption (needs test score), UBC early deadline (Dec 1) and scholarship eligibility, McGill AP credit and undergraduate out-of-province rate.
+- English proficiency requirements were removed from the site on request (2026-10-09). UBC's course requirement "senior-level English" stays because it is a graduation requirement, not a proficiency test.
+- Unconfirmed: U of T fee and OUAC form/codes, UCLA and Michigan fees, UBC early deadline (Dec 1) and scholarship eligibility, McGill AP credit and undergraduate out-of-province rate.
 - Not covered: UTSC/UTM specific dates, UCLA supplemental application deadlines, IB/AP and Canadian-curriculum details, program extras at McGill and UBC.
 - Dates change every cycle. Re-check official pages and update before relying on them.
 
