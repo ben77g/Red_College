@@ -9,7 +9,9 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 ## How it works
 - Everything is in one file, `index.html` (no build step, no dependencies).
 - School data is the `SCHOOLS` array near the bottom of the file. Each school has deadlines (`l` label, `d` ISO date, `u:1` if unconfirmed), fee, test policy, documents, English requirement and an official URL.
-- The page shows the next 12 deadlines across schools (with days left), plus a card per school. There is a country filter and a search box.
+- Layout: deadlines list on the left (all upcoming deadlines across schools, with days left; clicking one opens that school), school icons on the right. Clicking an icon expands it to full width and shows its details (deadlines, fee, tests, documents, English, a "For you" box). Click again to close. Stacks to one column on narrow screens.
+- Icons are colored monogram badges (the `BRAND` object in the script), not official logos. Add an entry there for each new school id.
+- There is a country filter and a search box.
 - To preview locally: open `index.html` in a browser, or run `python3 -m http.server` in this folder.
 - To add a school: copy an object in `SCHOOLS`, edit it, commit and push to `main`. Pages redeploys automatically.
 

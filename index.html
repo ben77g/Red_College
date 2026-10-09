@@ -11,7 +11,7 @@
   header { background:var(--red); color:#fff; padding:28px 20px; }
   header h1 { margin:0 0 4px; font-size:26px; }
   header p { margin:0; opacity:.9; }
-  main { max-width:1100px; margin:0 auto; padding:20px; }
+  main { max-width:1300px; margin:0 auto; padding:20px; }
   h2 { margin:28px 0 10px; font-size:19px; }
   .controls { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px; }
   .controls input, .controls select { padding:8px 10px; border:1px solid var(--line); border-radius:8px; font:inherit; background:#fff; }
@@ -39,6 +39,29 @@
   .dl .d { white-space:nowrap; font-weight:600; }
   .unv { color:var(--warn); font-size:12px; }
   a { color:var(--red); }
+
+  .layout { display:grid; grid-template-columns:minmax(300px,420px) 1fr; gap:28px; align-items:start; }
+  @media (max-width:900px){ .layout { grid-template-columns:1fr; } }
+  .left .upcoming { max-height:78vh; overflow:auto; }
+  .row { cursor:pointer; grid-template-columns:100px 1fr 54px; }
+  .row:hover { background:#faf6f4; }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+  .icons { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; }
+  .tile { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; transition:box-shadow .2s, transform .2s; }
+  .tile:not(.open):hover { box-shadow:0 6px 18px rgba(0,0,0,.12); transform:translateY(-2px); }
+  .tile .head { all:unset; box-sizing:border-box; width:100%; cursor:pointer; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:20px 12px; }
+  .tile .head:focus-visible { outline:3px solid var(--red); outline-offset:-3px; }
+  .badge { width:76px; height:76px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:26px; letter-spacing:-.02em; transition:width .25s, height .25s, font-size .25s; }
+  .tile .nm { font-weight:600; line-height:1.25; }
+  .tile .pl { color:var(--mute); font-size:12px; }
+  .tile.open { grid-column:1 / -1; animation:pop .25s ease; }
+  .tile.open .head { flex-direction:row; text-align:left; gap:18px; padding:20px 22px; border-bottom:1px solid var(--line); }
+  .tile.open .badge { width:112px; height:112px; font-size:40px; border-radius:28px; flex:none; }
+  .tile.open .nm { font-size:22px; }
+  .detail { padding:6px 22px 22px; }
+  .detail .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0 28px; }
+  @keyframes pop { from { transform:scale(.96); opacity:.6; } to { transform:scale(1); opacity:1; } }
+  .close { margin-left:auto; color:var(--mute); font-size:13px; }
   footer { color:var(--mute); font-size:13px; padding:10px 20px 40px; max-width:1100px; margin:0 auto; }
   .note { background:#fff7e6; border:1px solid #f0d9a8; border-radius:10px; padding:10px 14px; font-size:13px; margin-bottom:8px; }
   .profile { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:14px; }
@@ -53,15 +76,20 @@
   <div class="profile"><b>Profile used on this page:</b> Canadian citizen, attending a US high school (US curriculum, AP courses, SAT/ACT available). Whether you are a US permanent resident or need a student visa changes how the US schools treat you. See the blue "For you" box on each card.</div>
   <div class="note" style="margin-top:10px">Compiled from school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date.</div>
 
-  <h2>Next deadlines</h2>
-  <div class="controls">
-    <select id="country"><option value="all">US and Canada</option><option value="CA">Canada</option><option value="US">US</option></select>
-    <input id="q" type="search" placeholder="Search schools, platforms, requirements">
+  <div class="layout">
+    <section class="left">
+      <h2>Deadlines</h2>
+      <div class="controls">
+        <select id="country"><option value="all">US and Canada</option><option value="CA">Canada</option><option value="US">US</option></select>
+        <input id="q" type="search" placeholder="Search">
+      </div>
+      <div class="upcoming" id="upcoming"></div>
+    </section>
+    <section class="right">
+      <h2>Schools <span style="font-weight:400;color:var(--mute);font-size:13px">(click one to expand)</span></h2>
+      <div class="icons" id="grid"></div>
+    </section>
   </div>
-  <div class="upcoming" id="upcoming"></div>
-
-  <h2>Schools</h2>
-  <div class="grid" id="grid"></div>
 </main>
 <footer>Built for Red's. Data lives in the <code>SCHOOLS</code> array in index.html. Last updated 2026-10-09.</footer>
 
@@ -164,19 +192,40 @@ function matches(s){
   return JSON.stringify(s).toLowerCase().includes(q);
 }
 
+const BRAND = {
+  mcgill:{abbr:"McG", bg:"#ed1b2f", fg:"#fff"},
+  uoft:{abbr:"UofT", bg:"#1e3765", fg:"#fff"},
+  ubc:{abbr:"UBC", bg:"#002145", fg:"#fff"},
+  umich:{abbr:"UM", bg:"#00274c", fg:"#ffcb05"},
+  ucla:{abbr:"UCLA", bg:"#2774ae", fg:"#ffd100"}
+};
+let openId = null;
+
+function toggle(id){ openId = (openId===id) ? null : id; render(); const t=document.getElementById("tile-"+id); if(openId && t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); }
+
+function badge(id){
+  const b = BRAND[id] || {abbr:"?", bg:"#555", fg:"#fff"};
+  const e = el("div","badge",b.abbr); e.style.background=b.bg; e.style.color=b.fg; return e;
+}
+
 function render(){
   const list = SCHOOLS.filter(matches);
 
   const up = document.getElementById("upcoming"); up.replaceChildren();
   const all = [];
-  list.forEach(s => s.deadlines.forEach(d => all.push({...d, school:s.name})));
+  list.forEach(s => s.deadlines.forEach(d => all.push({...d, school:s.name, id:s.id})));
   all.sort((a,b)=>a.d.localeCompare(b.d));
-  const future = all.filter(x=>daysTo(x.d)>=0).slice(0,12);
+  const future = all.filter(x=>daysTo(x.d)>=0);
   if (!future.length) up.append(el("div","row","No upcoming deadlines match."));
   future.forEach(x => {
     const r = el("div","row");
+    r.title = "Open " + x.school;
+    r.addEventListener("click",()=>{ openId=x.id; render(); const t=document.getElementById("tile-"+x.id); if(t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); });
     r.append(el("div","when",fmt(x.d)));
-    const mid = el("div"); mid.append(el("div","",x.l + (x.u?" (unconfirmed)":"")), el("div","school",x.school));
+    const mid = el("div");
+    const lab = el("div","",x.l + (x.u?" (unconfirmed)":""));
+    const sch = el("div","school"); const dot = el("span","dot"); dot.style.background=(BRAND[x.id]||{}).bg||"#555"; sch.append(dot, x.school);
+    mid.append(lab, sch);
     r.append(mid);
     const n = daysTo(x.d);
     r.append(el("div","days", n===0?"Today":n+"d"));
@@ -185,40 +234,52 @@ function render(){
 
   const g = document.getElementById("grid"); g.replaceChildren();
   list.forEach(s => {
-    const c = el("div","card");
-    const h = el("h3",null,s.name);
-    h.append(el("span","tag "+s.country.toLowerCase(), s.country==="CA"?"Canada":"US"));
-    c.append(h, el("div","sub",s.place+" | "+s.platform));
+    const isOpen = openId===s.id;
+    const t = el("div","tile"+(isOpen?" open":"")); t.id="tile-"+s.id;
+    const head = el("button","head"); head.type="button"; head.setAttribute("aria-expanded", String(isOpen));
+    head.addEventListener("click",()=>toggle(s.id));
+    head.append(badge(s.id));
+    const txt = el("div"); txt.append(el("div","nm",s.name), el("div","pl",s.place+" | "+(s.country==="CA"?"Canada":"US")));
+    head.append(txt);
+    if (isOpen) head.append(el("div","close","click to close"));
+    t.append(head);
 
-    const y = el("div","you"); y.append(el("b",null,"For you (Canadian citizen, US high school)"));
-    y.append(document.createTextNode(s.you));
-    if (s.youUnv) y.append(" ", el("span","unv","partly unconfirmed"));
-    c.append(y);
+    if (isOpen) {
+      const c = el("div","detail");
+      c.append(el("div","sub","Platform: "+s.platform));
+      const y = el("div","you"); y.append(el("b",null,"For you (Canadian citizen, US high school)"));
+      y.append(document.createTextNode(s.you));
+      if (s.youUnv) y.append(" ", el("span","unv","partly unconfirmed"));
+      c.append(y);
 
-    c.append(el("h4",null,"Deadlines"));
-    s.deadlines.forEach(d => {
-      const r = el("div","dl");
-      const left = el("span",null,d.l);
-      if (d.u) left.append(" ", el("span","unv","unconfirmed"));
-      r.append(left, el("span","d",fmt(d.d)));
-      c.append(r);
-    });
-
-    const line = (title, text, unv) => {
-      c.append(el("h4",null,title));
-      const p = el("div",null,text);
-      if (unv) p.append(" ", el("span","unv","unconfirmed"));
-      c.append(p);
-    };
-    line("Application fee", s.fee, s.feeUnv);
-    line("Standardized tests", s.tests, s.testsUnv);
-    c.append(el("h4",null,"Documents and extras"));
-    const ul = el("ul"); s.docs.forEach(d=>ul.append(el("li",null,d))); c.append(ul);
-    line("English proficiency", s.english, s.englishUnv);
-    if (s.extra) line("Notes", s.extra);
-    const a = el("a",null,"Official page"); a.href=s.url; a.target="_blank"; a.rel="noopener";
-    const p = el("p"); p.append(a); c.append(p);
-    g.append(c);
+      const cols = el("div","cols");
+      const colA = el("div"), colB = el("div");
+      colA.append(el("h4",null,"Deadlines"));
+      s.deadlines.forEach(d => {
+        const r = el("div","dl");
+        const left = el("span",null,d.l);
+        if (d.u) left.append(" ", el("span","unv","unconfirmed"));
+        r.append(left, el("span","d",fmt(d.d)));
+        colA.append(r);
+      });
+      const line = (col, title, text, unv) => {
+        col.append(el("h4",null,title));
+        const p = el("div",null,text);
+        if (unv) p.append(" ", el("span","unv","unconfirmed"));
+        col.append(p);
+      };
+      line(colA, "Application fee", s.fee, s.feeUnv);
+      line(colA, "English proficiency", s.english, s.englishUnv);
+      line(colB, "Standardized tests", s.tests, s.testsUnv);
+      colB.append(el("h4",null,"Documents and extras"));
+      const ul = el("ul"); s.docs.forEach(d=>ul.append(el("li",null,d))); colB.append(ul);
+      if (s.extra) line(colB, "Notes", s.extra);
+      cols.append(colA, colB); c.append(cols);
+      const a = el("a",null,"Official page"); a.href=s.url; a.target="_blank"; a.rel="noopener";
+      const p = el("p"); p.append(a); c.append(p);
+      t.append(c);
+    }
+    g.append(t);
   });
 }
 document.getElementById("country").addEventListener("change",render);
