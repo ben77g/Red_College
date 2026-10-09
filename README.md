@@ -11,6 +11,8 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 - School data is the `SCHOOLS` array near the bottom of the file. Each school has deadlines (`l` label, `d` ISO date, `u:1` if unconfirmed), fee, test policy, documents, English requirement and an official URL.
 - Layout: deadlines list on the left (all upcoming deadlines across schools, with days left; clicking one opens that school), school icons on the right. Clicking an icon expands it to full width and shows its details (deadlines, fee, tests, documents, English, a "For you" box). Click again to close. Stacks to one column on narrow screens.
 - Icons are colored monogram badges (the `BRAND` object in the script), not official logos. Add an entry there for each new school id.
+- Theme: girly and frilly (pink polka-dot background, scalloped header edge, script headings, hearts and bows). All CSS is in the `<style>` block.
+- Progress bar: each opened school has a grass-green bar with a black outline and a pink SVG unicorn (`UNICORN_SVG`) that moves along it. Progress = ticked steps / total steps from the `TASKS` object (one checklist per school id). Ticks are saved in the browser's localStorage under `red_tasks_v1`, so they are per browser and per device, not shared.
 - There is a country filter and a search box.
 - To preview locally: open `index.html` in a browser, or run `python3 -m http.server` in this folder.
 - To add a school: copy an object in `SCHOOLS`, edit it, commit and push to `main`. Pages redeploys automatically.

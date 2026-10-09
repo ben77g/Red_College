@@ -5,76 +5,95 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Red's College Dashboard</title>
 <style>
-  :root { --red:#b3201f; --bg:#f6f4f2; --card:#fff; --ink:#1d1d1f; --mute:#6b6b70; --line:#e3e0dc; --warn:#b36b00; }
+  :root { --pink:#ff8cc0; --hot:#e0559a; --deep:#b02a74; --blush:#fff0f7; --lace:#f8c9de; --plum:#4a2040; --mute:#8a5b78; --card:#fffafd; --warn:#b36b00; --script:"Segoe Script","Brush Script MT","Snell Roundhand","Apple Chancery","Comic Sans MS",cursive; }
   * { box-sizing:border-box; }
-  body { margin:0; font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--ink); }
-  header { background:var(--red); color:#fff; padding:28px 20px; }
-  header h1 { margin:0 0 4px; font-size:26px; }
-  header p { margin:0; opacity:.9; }
-  main { max-width:1300px; margin:0 auto; padding:20px; }
-  h2 { margin:28px 0 10px; font-size:19px; }
-  .controls { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px; }
-  .controls input, .controls select { padding:8px 10px; border:1px solid var(--line); border-radius:8px; font:inherit; background:#fff; }
-  .controls input { flex:1; min-width:180px; }
-  .upcoming { background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-  .row { display:grid; grid-template-columns:110px 1fr 90px; gap:12px; padding:10px 14px; border-top:1px solid var(--line); align-items:center; }
+  body { margin:0; font:15px/1.55 "Trebuchet MS","Segoe UI",system-ui,sans-serif; color:var(--plum);
+    background-color:#ffe3f0;
+    background-image:radial-gradient(circle at 12px 12px, #fff 2.5px, transparent 3px), radial-gradient(circle at 36px 36px, #ffc4de 2.5px, transparent 3px);
+    background-size:48px 48px; }
+  header { background:linear-gradient(180deg,#ff9ccb,#ff6fae); color:#fff; padding:30px 20px 46px; text-align:center; position:relative; text-shadow:0 2px 0 rgba(176,42,116,.45); }
+  header::after { content:""; position:absolute; left:0; right:0; bottom:-14px; height:28px;
+    background:radial-gradient(circle at 14px 0, #ff6fae 14px, transparent 15px) repeat-x; background-size:28px 28px; }
+  header h1 { margin:0 0 4px; font:700 38px var(--script); letter-spacing:.5px; }
+  header p { margin:0; font-size:15px; }
+  .sparkle { display:inline-block; animation:twinkle 2.4s ease-in-out infinite; }
+  @keyframes twinkle { 50% { transform:scale(1.25) rotate(12deg); opacity:.75; } }
+  main { max-width:1300px; margin:0 auto; padding:30px 20px; }
+  h2 { margin:24px 0 10px; font:700 25px var(--script); color:var(--deep); }
+  h2::before { content:"\1F380 "; font-family:inherit; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:8px; }
+  .controls input, .controls select { padding:9px 14px; border:2px solid var(--lace); border-radius:99px; font:inherit; background:#fff; color:var(--plum); }
+  .controls input { flex:1; min-width:140px; }
+  .controls input:focus, .controls select:focus { outline:none; border-color:var(--hot); }
+  .profile, .note { border-radius:18px; padding:12px 18px; font-size:14px; background:#fff; border:2px dashed var(--hot); box-shadow:0 0 0 5px #fff, 0 0 0 7px var(--lace); margin:0 7px 16px; }
+  .note { border-color:#e9b44c; background:#fffaf0; }
+  .layout { display:grid; grid-template-columns:minmax(300px,420px) 1fr; gap:30px; align-items:start; }
+  @media (max-width:900px){ .layout { grid-template-columns:1fr; } }
+  .upcoming { background:var(--card); border:3px solid var(--lace); border-radius:22px; overflow:hidden; box-shadow:0 6px 0 var(--lace); max-height:78vh; overflow-y:auto; }
+  .row { display:grid; grid-template-columns:100px 1fr 54px; gap:12px; padding:11px 16px; border-top:2px dotted var(--lace); align-items:center; cursor:pointer; }
   .row:first-child { border-top:0; }
-  .row .when { font-weight:600; }
+  .row:hover { background:var(--blush); }
+  .row .when { font-weight:700; color:var(--deep); }
   .row .school { color:var(--mute); font-size:13px; }
-  .days { text-align:right; font-weight:600; color:var(--red); }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(480px,1fr)); gap:16px; }
-  @media (max-width:560px){ .grid { grid-template-columns:1fr; } .row { grid-template-columns:90px 1fr 60px; } }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }
-  .card h3 { margin:0; font-size:19px; }
-  .sub { color:var(--mute); font-size:13px; margin-bottom:10px; }
-  .tag { display:inline-block; font-size:11px; padding:1px 8px; border-radius:99px; border:1px solid var(--line); margin-left:6px; vertical-align:middle; }
-  .tag.ca { color:#a1161a; border-color:#e8b9ba; } .tag.us { color:#1f4e9c; border-color:#b8c9e8; }
-  .card h4 { margin:14px 0 4px; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--mute); }
-  .you { background:#eef6ff; border:1px solid #c7ddf5; border-radius:8px; padding:8px 12px; margin-top:12px; font-size:14px; }
-  .you b { display:block; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:#1f4e9c; }
-  ul { margin:0; padding-left:18px; } li { margin:2px 0; }
-  .dl { display:flex; justify-content:space-between; gap:10px; padding:3px 0; border-bottom:1px dashed var(--line); }
+  .days { text-align:right; font-weight:700; color:var(--hot); }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; border:2px solid #fff; box-shadow:0 0 0 1px var(--lace); }
+  .icons { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:18px; }
+  .tile { background:var(--card); border:3px solid var(--lace); border-radius:26px; overflow:hidden; transition:box-shadow .2s, transform .2s; box-shadow:0 6px 0 var(--lace); position:relative; }
+  .tile:not(.open):hover { transform:translateY(-4px) rotate(-.7deg); box-shadow:0 10px 0 var(--lace); }
+  .tile:not(.open)::before { content:"\1F380"; position:absolute; top:6px; right:10px; font-size:18px; }
+  .tile .head { all:unset; box-sizing:border-box; width:100%; cursor:pointer; display:flex; flex-direction:column; align-items:center; text-align:center; gap:9px; padding:22px 12px; }
+  .tile .head:focus-visible { outline:3px solid var(--hot); outline-offset:-4px; border-radius:22px; }
+  .badge { width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:26px; border:4px solid #fff; box-shadow:0 0 0 3px var(--pink), 0 4px 10px rgba(176,42,116,.3); transition:all .25s; }
+  .tile .nm { font-weight:700; line-height:1.25; }
+  .tile .pl { color:var(--mute); font-size:12px; }
+  .tile.open { grid-column:1 / -1; animation:pop .3s ease; }
+  .tile.open .head { flex-direction:row; text-align:left; gap:20px; padding:20px 24px; border-bottom:3px dotted var(--lace); background:linear-gradient(90deg,var(--blush),#fff); }
+  .tile.open .badge { width:116px; height:116px; font-size:40px; flex:none; }
+  .tile.open .nm { font:700 27px var(--script); color:var(--deep); }
+  .detail { padding:8px 24px 24px; }
+  .detail .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0 30px; }
+  @keyframes pop { from { transform:scale(.95); opacity:.5; } to { transform:scale(1); opacity:1; } }
+  .close { margin-left:auto; color:var(--mute); font-size:13px; }
+  .sub { color:var(--mute); font-size:13px; margin:8px 0; }
+  .tag { display:inline-block; font-size:11px; padding:1px 9px; border-radius:99px; border:1px solid var(--lace); margin-left:6px; }
+  .detail h4 { margin:16px 0 5px; font:700 15px var(--script); color:var(--hot); }
+  .detail h4::before { content:"\2665 "; }
+  .you { background:linear-gradient(135deg,#fff0f7,#f3ecff); border:2px solid var(--pink); border-radius:16px; padding:10px 14px; margin-top:8px; font-size:14px; }
+  .you b { display:block; font:700 15px var(--script); color:var(--deep); }
+  ul { margin:0; padding-left:20px; } li { margin:3px 0; } li::marker { content:"\2661  "; color:var(--hot); }
+  .dl { display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:2px dotted var(--lace); }
   .dl:last-child { border-bottom:0; }
   .dl span:first-child { flex:1; }
-  .dl .d { white-space:nowrap; font-weight:600; }
+  .dl .d { white-space:nowrap; font-weight:700; color:var(--deep); }
   .unv { color:var(--warn); font-size:12px; }
-  a { color:var(--red); }
+  a { color:var(--hot); font-weight:700; }
+  footer { color:var(--mute); font-size:13px; padding:10px 20px 44px; max-width:1300px; margin:0 auto; text-align:center; }
 
-  .layout { display:grid; grid-template-columns:minmax(300px,420px) 1fr; gap:28px; align-items:start; }
-  @media (max-width:900px){ .layout { grid-template-columns:1fr; } }
-  .left .upcoming { max-height:78vh; overflow:auto; }
-  .row { cursor:pointer; grid-template-columns:100px 1fr 54px; }
-  .row:hover { background:#faf6f4; }
-  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
-  .icons { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; }
-  .tile { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; transition:box-shadow .2s, transform .2s; }
-  .tile:not(.open):hover { box-shadow:0 6px 18px rgba(0,0,0,.12); transform:translateY(-2px); }
-  .tile .head { all:unset; box-sizing:border-box; width:100%; cursor:pointer; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:20px 12px; }
-  .tile .head:focus-visible { outline:3px solid var(--red); outline-offset:-3px; }
-  .badge { width:76px; height:76px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:26px; letter-spacing:-.02em; transition:width .25s, height .25s, font-size .25s; }
-  .tile .nm { font-weight:600; line-height:1.25; }
-  .tile .pl { color:var(--mute); font-size:12px; }
-  .tile.open { grid-column:1 / -1; animation:pop .25s ease; }
-  .tile.open .head { flex-direction:row; text-align:left; gap:18px; padding:20px 22px; border-bottom:1px solid var(--line); }
-  .tile.open .badge { width:112px; height:112px; font-size:40px; border-radius:28px; flex:none; }
-  .tile.open .nm { font-size:22px; }
-  .detail { padding:6px 22px 22px; }
-  .detail .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0 28px; }
-  @keyframes pop { from { transform:scale(.96); opacity:.6; } to { transform:scale(1); opacity:1; } }
-  .close { margin-left:auto; color:var(--mute); font-size:13px; }
-  footer { color:var(--mute); font-size:13px; padding:10px 20px 40px; max-width:1100px; margin:0 auto; }
-  .note { background:#fff7e6; border:1px solid #f0d9a8; border-radius:10px; padding:10px 14px; font-size:13px; margin-bottom:8px; }
-  .profile { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:14px; }
+  /* progress: grass bar with a pink unicorn */
+  .progress { margin:14px 0 6px; padding:6px 4px 4px; }
+  .prog-top { display:flex; justify-content:space-between; font-size:13px; color:var(--mute); }
+  .grass { position:relative; height:24px; margin-top:38px; border:3px solid #000; border-radius:14px;
+    background:repeating-linear-gradient(90deg, rgba(0,90,0,.22) 0 2px, transparent 2px 7px), #a6e57c; }
+  .grass .fill { position:absolute; left:0; top:0; bottom:0; width:0; border-radius:11px 0 0 11px;
+    background:repeating-linear-gradient(90deg, rgba(0,70,0,.3) 0 2px, transparent 2px 7px), #3fae3a; transition:width .5s ease; }
+  .grass .fill.full { border-radius:11px; }
+  .unicorn { position:absolute; bottom:5px; width:58px; height:49px; transition:left .5s ease, transform .5s ease; filter:drop-shadow(0 2px 0 rgba(0,0,0,.25)); pointer-events:none; }
+  .unicorn svg { width:100%; height:100%; display:block; }
+  .tasks { list-style:none; padding:0; margin:12px 0 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:4px 18px; }
+  .tasks li::marker { content:""; }
+  .tasks label { display:flex; gap:8px; align-items:flex-start; cursor:pointer; }
+  .tasks input { accent-color:var(--hot); width:17px; height:17px; margin-top:2px; flex:none; }
+  .tasks .done span { text-decoration:line-through; color:var(--mute); }
 </style>
 </head>
 <body>
 <header>
-  <h1>Red's College Dashboard</h1>
-  <p>Fall 2027 first-year deadlines and requirements for a US and Canadian dual citizen applying from a US high school</p>
+  <h1><span class="sparkle">&#10024;</span> Red's College Dashboard <span class="sparkle">&#10024;</span></h1>
+  <p>Fall 2027 first-year deadlines and requirements for a US and Canadian dual citizen applying from a US high school &#128150;</p>
 </header>
 <main>
-  <div class="profile"><b>Profile used on this page:</b> US and Canadian dual citizen, attending a US high school (US curriculum, AP courses, SAT/ACT available). Your US citizenship makes you a domestic applicant at Michigan and UCLA, and your Canadian citizenship gives you Canadian status at McGill, U of T and UBC. See the blue "For you" box on each card.</div>
-  <div class="note" style="margin-top:10px">Compiled from school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date.</div>
+  <div class="profile"><b>Profile used on this page:</b> US and Canadian dual citizen, California resident, attending a US high school (US curriculum, AP courses, SAT/ACT available), never lived in Canada. Your US citizenship makes you a domestic applicant at Michigan and UCLA, and your Canadian citizenship gives you Canadian status at McGill, U of T and UBC. See the pink "For you" box on each school.</div>
+  <div class="note">Compiled from school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date.</div>
 
   <div class="layout">
     <section class="left">
@@ -86,12 +105,12 @@
       <div class="upcoming" id="upcoming"></div>
     </section>
     <section class="right">
-      <h2>Schools <span style="font-weight:400;color:var(--mute);font-size:13px">(click one to expand)</span></h2>
+      <h2>Schools <span style="font:400 13px sans-serif;color:var(--mute)">(click one to open it)</span></h2>
       <div class="icons" id="grid"></div>
     </section>
   </div>
 </main>
-<footer>Built for Red's. Data lives in the <code>SCHOOLS</code> array in index.html. Last updated 2026-10-09.</footer>
+<footer>&#127800; Built for Red's &#127800; Data lives in the <code>SCHOOLS</code> array in index.html. Last updated 2026-10-09.</footer>
 
 <script>
 const SCHOOLS = [
@@ -201,9 +220,73 @@ const BRAND = {
   umich:{abbr:"UM", bg:"#00274c", fg:"#ffcb05"},
   ucla:{abbr:"UCLA", bg:"#2774ae", fg:"#ffd100"}
 };
-let openId = null;
 
-function toggle(id){ openId = (openId===id) ? null : id; render(); const t=document.getElementById("tile-"+id); if(openId && t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); }
+/* Application checklist per school. Progress bar = ticked / total. Saved in this browser (localStorage). */
+const TASKS = {
+  mcgill:["Create the McGill application account","Self-report grades 10 to 12 (opens Nov 15)","Decide whether to send SAT/ACT (optional)","Program extras if needed (CASPer, statement)","Submit application and fee (Jan 15)","Entrance scholarship application (Jan 21)","Submit supporting documents (Mar 1)","Gather Quebec resident tuition proof (Situation 8)"],
+  uoft:["Create the OUAC account","Send SAT/AP scores if submitting (Engineering needs all scores)","Engineering profile or Music questionnaire if needed (Jan 15)","Architecture, Rotman or Computer Science supplemental if needed (Feb 1)","Submit OUAC application (Jan 15, or early by Nov 7)","Send documents (Dec 1 if early, otherwise by Jan 15 to Feb 1)","Residence application (Mar 31)"],
+  ubc:["Create the UBC application account","Write the personal profile essays","Submit application (Dec 1 for early and scholarships, Jan 15 final)","Send transcripts and documents","Accept offer and apply for housing (May 1)"],
+  umich:["Set up the Common App","Write the Michigan essays","Ask counselor and teachers for recommendations","Send transcript","Submit application (Nov 1 early, Feb 1 regular)","File the FAFSA"],
+  ucla:["Start the UC application","Write the Personal Insight Questions","Submit application by Nov 30","Supplemental application if needed (Arts, Music, Nursing, TFT)","File FAFSA and verify GPA for Cal Grant (Mar 2)","Send AP/IB scores (Jul 15) and final transcript (Jul 1)"]
+};
+function loadChecks(){ try { return JSON.parse(localStorage.getItem("red_tasks_v1")) || {}; } catch(e){ return {}; } }
+function saveChecks(o){ try { localStorage.setItem("red_tasks_v1", JSON.stringify(o)); } catch(e){} }
+
+const UNICORN_SVG = '<svg viewBox="0 -8 66 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+ + '<path d="M13 22 C2 20 0 34 6 40 C4 32 9 28 15 29 Z" fill="#c58cff" stroke="#6b2b7a" stroke-width="1.5" stroke-linejoin="round"/>'
+ + '<rect x="14" y="30" width="5" height="15" rx="2" fill="#ffadd2" stroke="#b02a74" stroke-width="1.5"/>'
+ + '<rect x="22" y="31" width="5" height="14" rx="2" fill="#ff9ccb" stroke="#b02a74" stroke-width="1.5"/>'
+ + '<rect x="35" y="31" width="5" height="14" rx="2" fill="#ff9ccb" stroke="#b02a74" stroke-width="1.5"/>'
+ + '<rect x="42" y="30" width="5" height="15" rx="2" fill="#ffadd2" stroke="#b02a74" stroke-width="1.5"/>'
+ + '<ellipse cx="30" cy="27" rx="19" ry="10" fill="#ffb8d9" stroke="#b02a74" stroke-width="1.5"/>'
+ + '<path d="M42 24 L47 8 L58 10 L55 28 Z" fill="#ffb8d9" stroke="#b02a74" stroke-width="1.5" stroke-linejoin="round"/>'
+ + '<ellipse cx="55" cy="15" rx="9" ry="7.5" fill="#ffb8d9" stroke="#b02a74" stroke-width="1.5"/>'
+ + '<path d="M44 9 C38 14 40 22 44 26 C42 19 44 14 47 10 Z" fill="#c58cff" stroke="#6b2b7a" stroke-width="1.2" stroke-linejoin="round"/>'
+ + '<path d="M50 9 L51 -6 L56 8 Z" fill="#ffe27a" stroke="#c48a00" stroke-width="1.2" stroke-linejoin="round"/>'
+ + '<path d="M50 9 L53 7 L50 6 Z" fill="#ff8ad0"/>'
+ + '<circle cx="57" cy="14" r="1.8" fill="#4a2040"/><circle cx="57.6" cy="13.4" r=".6" fill="#fff"/>'
+ + '<ellipse cx="61" cy="18" rx="1.5" ry="1" fill="#e0559a"/>'
+ + '<circle cx="52" cy="18" r="2" fill="#ff7eb6" opacity=".6"/>'
+ + '</svg>';
+
+function progressBlock(s){
+  const tasks = TASKS[s.id] || [];
+  const checks = loadChecks();
+  const state = checks[s.id] || [];
+  const wrap = el("div","progress");
+  const top = el("div","prog-top");
+  const lab = el("span"), pctLab = el("span");
+  top.append(lab, pctLab);
+  const grass = el("div","grass"); grass.setAttribute("role","progressbar"); grass.setAttribute("aria-valuemin","0"); grass.setAttribute("aria-valuemax","100");
+  const fill = el("div","fill");
+  const uni = el("div","unicorn"); uni.innerHTML = UNICORN_SVG;
+  grass.append(fill, uni);
+  function update(){
+    const n = tasks.filter((_,i)=>state[i]).length;
+    const pct = tasks.length ? Math.round(100*n/tasks.length) : 0;
+    lab.textContent = "Application progress: "+n+" of "+tasks.length+" steps";
+    pctLab.textContent = pct+"%";
+    fill.style.width = pct+"%";
+    fill.classList.toggle("full", pct===100);
+    uni.style.left = "calc("+pct+"% - "+(pct*0.58)+"px)";
+    grass.setAttribute("aria-valuenow", String(pct));
+    pctLab.textContent = pct===100 ? "100% ✨ done!" : pct+"%";
+  }
+  const ul = el("ul","tasks");
+  tasks.forEach((t,i)=>{
+    const li = el("li", state[i]?"done":"");
+    const lb = el("label"); const cb = document.createElement("input"); cb.type="checkbox"; cb.checked=!!state[i];
+    cb.addEventListener("change",()=>{ state[i]=cb.checked; const all=loadChecks(); all[s.id]=state; saveChecks(all); li.classList.toggle("done",cb.checked); update(); });
+    lb.append(cb, el("span",null,t)); li.append(lb); ul.append(li);
+  });
+  wrap.append(top, grass, ul);
+  update();
+  return wrap;
+}
+
+let openId = null;
+function openSchool(id){ openId=id; render(); const t=document.getElementById("tile-"+id); if(t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); }
+function toggle(id){ if (openId===id) { openId=null; render(); } else openSchool(id); }
 
 function badge(id){
   const b = BRAND[id] || {abbr:"?", bg:"#555", fg:"#fff"};
@@ -222,12 +305,11 @@ function render(){
   future.forEach(x => {
     const r = el("div","row");
     r.title = "Open " + x.school;
-    r.addEventListener("click",()=>{ openId=x.id; render(); const t=document.getElementById("tile-"+x.id); if(t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); });
+    r.addEventListener("click",()=>openSchool(x.id));
     r.append(el("div","when",fmt(x.d)));
     const mid = el("div");
-    const lab = el("div","",x.l + (x.u?" (unconfirmed)":""));
     const sch = el("div","school"); const dot = el("span","dot"); dot.style.background=(BRAND[x.id]||{}).bg||"#555"; sch.append(dot, x.school);
-    mid.append(lab, sch);
+    mid.append(el("div","",x.l + (x.u?" (unconfirmed)":"")), sch);
     r.append(mid);
     const n = daysTo(x.d);
     r.append(el("div","days", n===0?"Today":n+"d"));
@@ -249,7 +331,8 @@ function render(){
     if (isOpen) {
       const c = el("div","detail");
       c.append(el("div","sub","Platform: "+s.platform));
-      const y = el("div","you"); y.append(el("b",null,"For you (US and Canadian dual citizen)"));
+      c.append(progressBlock(s));
+      const y = el("div","you"); y.append(el("b",null,"For you (US and Canadian dual citizen, California resident)"));
       y.append(document.createTextNode(s.you));
       if (s.youUnv) y.append(" ", el("span","unv","partly unconfirmed"));
       c.append(y);
