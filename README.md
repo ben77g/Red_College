@@ -86,3 +86,6 @@ The "Speak the password to enter the castle" heading and the Enter button were r
 
 ## Darker wall (2026-10-09)
 The gate's stone wall was darkened on request, as if the room were dim: a stronger vignette, a flat dark overlay and a darker base color in the `#gate` background. To adjust, change the alpha values in that `background` rule (vignette `.42`/`.86`, overlay `.28`).
+
+## Pitch-black room with torches (2026-10-09)
+The gate's room is now pitch black (`#gate` background `#000`). Two wall torches (`.torch.l` and `.torch.r`, an inline SVG each with three animated flame layers and a few rising embers) flank the dragon, and the grey stone wall (`.stone`) is only visible where the torches light it: it is masked by two radial gradients centred on the torches, then warmed with a sepia filter, and a screen-blended orange glow (`.torchlight`) sits over it. The dragon itself is dimmed (`#gate .dragon svg` brightness .62) with warm light catching its two sides (`.rim.l`, `.rim.r`). The light flickers (`lightflick`). Layout variables on `#gate`: `--dw` dragon width, `--tc` distance from the screen edge to a torch (clamped so torches stay on screen), `--ty` torch height. On phones (max-width 700px) the torches shrink and sit higher, overlapping the dragon's edges. The old darker-wall note above is superseded. Flames stop animating if the OS asks for reduced motion.
