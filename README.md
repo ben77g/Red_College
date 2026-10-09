@@ -83,3 +83,6 @@ Lessons: a Chrome `border-image` data URI of about 400 KB is silently ignored (k
 
 ## Gate text and button (2026-10-09)
 The "Speak the password to enter the castle" heading and the Enter button were removed on request. The password box is a one-field form, so pressing Enter on the keyboard still submits it (on a phone, use the keyboard's Go/Enter key).
+
+## Darker wall (2026-10-09)
+The gate's stone wall was darkened on request, as if the room were dim: a stronger vignette, a flat dark overlay and a darker base color in the `#gate` background. To adjust, change the alpha values in that `background` rule (vignette `.42`/`.86`, overlay `.28`).
