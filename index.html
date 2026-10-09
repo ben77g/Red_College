@@ -276,6 +276,12 @@
   .mini .mtrack { width:100%; height:8px; border:1.5px solid #000; border-radius:6px; overflow:hidden; background:repeating-linear-gradient(90deg, rgba(176,42,116,.14) 0 2px, transparent 2px 6px), #ffd6e8; }
   .mini .mtrack i { display:block; height:100%; width:0; background:repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 6px), linear-gradient(180deg,#ff9ccb,#e0559a); border-radius:0 3px 3px 0; transition:width .4s ease; }
   .mini .mlab { font-size:10px; line-height:1.1; font-weight:700; color:var(--mute); }
+  /* caution tape for schools whose main deadline is unconfirmed (secondary source or unavailable) */
+  .tape { position:absolute; inset:0; pointer-events:none; z-index:3; filter:drop-shadow(0 3px 2px rgba(0,0,0,.35)); }
+  .tape i { position:absolute; inset:0; background:repeating-linear-gradient(45deg,#16130a 0 11px,#ffd400 11px 22px);
+    clip-path:polygon(0 0, 17% 0, 100% 83%, 100% 100%, 83% 100%, 0 17%); }
+  .caution-sign { display:inline-block; width:.8em; height:.74em; margin-left:.35em; vertical-align:-.05em; filter:drop-shadow(0 1px 0 rgba(0,0,0,.25)); }
+  .caution-sign svg { display:block; width:100%; height:100%; }
 </style>
 </head>
 <body class="locked">
@@ -359,7 +365,7 @@
 <h1 class="sr-only">Red's College Dashboard</h1>
 <main>
   <div class="intro">
-    <div class="note" data-label="Note">Compiled from school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date.</div>
+    <div class="note" data-label="Note">Compiled from school pages in October 2026. Items marked <b>unconfirmed</b> came from secondary sources or could not be read. Always check the school's official page before relying on a date. A school with yellow caution tape across its icon (or a caution sign next to its name) has a main deadline that is unconfirmed.</div>
   </div>
 
   <div class="layout">
@@ -960,6 +966,18 @@ function miniBar(id){
   return w;
 }
 
+const CAUTION_SVG = '<svg viewBox="0 0 24 22" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Caution"><path d="M12 1.6 L23 20.4 H1 Z" fill="#ffd400" stroke="#000" stroke-width="2" stroke-linejoin="round"/><rect x="11" y="7.6" width="2" height="6.6" rx=".6" fill="#000"/><circle cx="12" cy="16.9" r="1.3" fill="#000"/></svg>';
+/* A school gets caution marks when its main (target) deadline is unconfirmed: from a secondary source or not found. */
+function isCaution(s){
+  const t = TARGETS[s.id]; if (!t) return false;
+  return s.deadlines.some(d => d.d === t.d && d.u);
+}
+function cautionSign(){
+  const sp = el("span","caution-sign"); sp.innerHTML = CAUTION_SVG;
+  sp.title = "Deadline information is unconfirmed (secondary source or not found). Check the school's page.";
+  return sp;
+}
+
 let openId = null;
 function openSchool(id){ openId=id; render(); const t=document.getElementById("tile-"+id); if(t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); }
 function toggle(id){ if (openId===id) { openId=null; render(); } else openSchool(id); }
@@ -1004,8 +1022,12 @@ function render(){
     const head = el("button","head"); head.type="button"; head.setAttribute("aria-expanded", String(isOpen));
     head.addEventListener("click",()=>toggle(s.id));
     head.append(badge(s.id));
-    const txt = el("div"); txt.append(el("div","nm",s.name), el("div","pl",s.place+" \u00b7 "+(s.country==="CA"?"Canada":"US")));
+    const caution = isCaution(s);
+    const nm = el("div","nm",s.name);
+    if (caution && isOpen) nm.append(cautionSign());
+    const txt = el("div"); txt.append(nm, el("div","pl",s.place+" \u00b7 "+(s.country==="CA"?"Canada":"US")));
     head.append(txt);
+    if (caution && !isOpen) { const tp = el("div","tape"); tp.title="Deadline information is unconfirmed"; tp.append(el("i")); t.append(tp); }
     if (!isOpen) head.append(miniBar(s.id));
     if (isOpen) { const x = el("div","close","\u00d7"); x.setAttribute("aria-hidden","true"); x.title="Close"; head.append(x); }
     t.append(head);
