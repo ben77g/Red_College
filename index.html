@@ -278,8 +278,8 @@
   .mini .mlab { font-size:10px; line-height:1.1; font-weight:700; color:var(--mute); }
   /* caution tape for schools whose main deadline is unconfirmed (secondary source or unavailable) */
   .tape { position:absolute; inset:0; pointer-events:none; z-index:3; filter:drop-shadow(0 3px 2px rgba(0,0,0,.35)); }
-  .tape i { position:absolute; inset:0; background:repeating-linear-gradient(45deg,#16130a 0 11px,#ffd400 11px 22px);
-    clip-path:polygon(0 0, 17% 0, 100% 83%, 100% 100%, 83% 100%, 0 17%); }
+  .tape i { position:absolute; left:50%; top:50%; height:30px; width:260px; transform:translate(-50%,-50%) rotate(40deg);
+    background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%2230%22 viewBox=%220 0 150 30%22%3E%3Crect width=%22150%22 height=%2230%22 fill=%22%23ffd400%22/%3E%3Ctext x=%228%22 y=%2221%22 font-family=%22Arial Black, Impact, Arial, Helvetica, sans-serif%22 font-weight=%22900%22 font-size=%2216%22 letter-spacing=%222%22 fill=%22%23111%22%3ECAUTION%3C/text%3E%3Cpath d=%22M127 -1 L137 31%22 stroke=%22%23111%22 stroke-width=%225%22/%3E%3C/svg%3E") repeat-x 0 0 / auto 100%; border-top:1.5px solid #8a7000; border-bottom:1.5px solid #8a7000; box-sizing:content-box; }
   .caution-sign { display:inline-block; width:.8em; height:.74em; margin-left:.35em; vertical-align:-.05em; filter:drop-shadow(0 1px 0 rgba(0,0,0,.25)); }
   .caution-sign svg { display:block; width:100%; height:100%; }
 </style>
@@ -978,6 +978,17 @@ function cautionSign(){
   return sp;
 }
 
+function layoutTapes(){
+  document.querySelectorAll(".tile .tape").forEach(tp=>{
+    const t = tp.parentElement, band = tp.firstElementChild; if(!band) return;
+    const w = t.clientWidth, h = t.clientHeight; if(!w||!h) return;
+    const ang = Math.atan2(h, w) * 180 / Math.PI;
+    band.style.width = (Math.hypot(w,h) + 60) + "px";
+    band.style.transform = "translate(-50%,-50%) rotate(" + ang.toFixed(2) + "deg)";
+  });
+}
+window.addEventListener("resize", layoutTapes);
+
 let openId = null;
 function openSchool(id){ openId=id; render(); const t=document.getElementById("tile-"+id); if(t) t.scrollIntoView({behavior:"smooth",block:"nearest"}); }
 function toggle(id){ if (openId===id) { openId=null; render(); } else openSchool(id); }
@@ -1082,6 +1093,7 @@ function render(){
     }
     g.append(t);
   });
+  layoutTapes(); requestAnimationFrame(layoutTapes);
 }
 document.getElementById("country").addEventListener("change",render);
 document.getElementById("q").addEventListener("input",render);
