@@ -36,3 +36,6 @@ McGill, University of Toronto (St. George), UBC Vancouver, University of Michiga
 ## Gaps / todo
 - Verify the unconfirmed items above against official pages.
 - Add more schools.
+
+## Merge note (2026-10-09)
+The cloud session "Red makeover" pushed two near-duplicate redesigns: `claude/red-gui-makeover-aml1se` (44e6406) and `claude/red-gui-redesign-t1tqmr` (f651016). They conflicted on every file, so `main` records both as merged but the site content is the later one (f651016). The earlier branch's content was not kept where it differed. Both branches still exist on GitHub.
