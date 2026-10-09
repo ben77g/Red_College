@@ -315,7 +315,7 @@ const BRAND = {
   ucla:{abbr:"UCLA", bg:"#2774ae", fg:"#ffd100"}
 };
 
-/* Application checklist per school. Progress bar = ticked / total. Saved in this browser (localStorage). */
+/* Optional application checklist per school. Saved in this browser (localStorage). It does not move the progress bar. */
 const TASKS = {
   mcgill:["Create the McGill application account","Self-report grades 10 to 12 (opens Nov 15)","Decide whether to send SAT/ACT (optional)","Program extras if needed (CASPer, statement)","Submit application and fee (Jan 15)","Entrance scholarship application (Jan 21)","Submit supporting documents (Mar 1)","Gather Quebec resident tuition proof (Situation 8)"],
   uoft:["Create the OUAC account","Send SAT/AP scores if submitting (Engineering needs all scores)","Engineering profile or Music questionnaire if needed (Jan 15)","Architecture, Rotman or Computer Science supplemental if needed (Feb 1)","Submit OUAC application (Jan 15, or early by Nov 7)","Send documents (Dec 1 if early, otherwise by Jan 15 to Feb 1)","Residence application (Mar 31)"],
@@ -343,10 +343,24 @@ const UNICORN_SVG = '<svg viewBox="0 -8 66 56" xmlns="http://www.w3.org/2000/svg
  + '<circle cx="52" cy="18" r="2" fill="#ff7eb6" opacity=".6"/>'
  + '</svg>';
 
+/* Progress bar = how close the main deadline is. It runs from SEASON_START to each school's target date. */
+const SEASON_START = "2026-08-01"; /* Common App and the UC application open Aug 1 */
+const TARGETS = {
+  mcgill:{d:"2027-01-15", l:"application deadline"},
+  uoft:{d:"2027-01-15", l:"final application deadline"},
+  ubc:{d:"2027-01-15", l:"final application deadline"},
+  umich:{d:"2027-02-01", l:"Regular Decision deadline (early rounds close Nov 1)"},
+  ucla:{d:"2026-11-30", l:"UC application deadline"}
+};
+function timeProgress(id){
+  const t = TARGETS[id]; if(!t) return null;
+  const start = new Date(SEASON_START+"T00:00:00"), end = new Date(t.d+"T00:00:00");
+  const frac = Math.min(1, Math.max(0, (today - start) / (end - start)));
+  return {pct:Math.round(frac*100), days:daysTo(t.d), t};
+}
+
 function progressBlock(s){
-  const tasks = TASKS[s.id] || [];
-  const checks = loadChecks();
-  const state = checks[s.id] || [];
+  const tp = timeProgress(s.id);
   const wrap = el("div","progress");
   const top = el("div","prog-top");
   const lab = el("span"), pctLab = el("span");
@@ -355,26 +369,38 @@ function progressBlock(s){
   const fill = el("div","fill");
   const uni = el("div","unicorn"); uni.innerHTML = UNICORN_SVG;
   grass.append(fill, uni);
-  function update(){
-    const n = tasks.filter((_,i)=>state[i]).length;
-    const pct = tasks.length ? Math.round(100*n/tasks.length) : 0;
-    lab.textContent = "Application progress: "+n+" of "+tasks.length+" steps";
+  if (tp) {
+    const pct = tp.pct;
+    lab.textContent = tp.days>0 ? tp.days+" days until the "+tp.t.l+" ("+fmt(tp.t.d)+")"
+                    : tp.days===0 ? "Deadline is today! ("+tp.t.l+")" : "The "+tp.t.l+" has passed ("+fmt(tp.t.d)+")";
     pctLab.textContent = pct+"%";
     fill.style.width = pct+"%";
     fill.classList.toggle("full", pct===100);
     uni.style.left = "calc("+pct+"% - "+(pct*0.58)+"px)";
     grass.setAttribute("aria-valuenow", String(pct));
-    pctLab.textContent = pct===100 ? "100% ✨ done!" : pct+"%";
   }
-  const ul = el("ul","tasks");
-  tasks.forEach((t,i)=>{
-    const li = el("li", state[i]?"done":"");
-    const lb = el("label"); const cb = document.createElement("input"); cb.type="checkbox"; cb.checked=!!state[i];
-    cb.addEventListener("change",()=>{ state[i]=cb.checked; const all=loadChecks(); all[s.id]=state; saveChecks(all); li.classList.toggle("done",cb.checked); update(); });
-    lb.append(cb, el("span",null,t)); li.append(lb); ul.append(li);
-  });
-  wrap.append(top, grass, ul);
-  update();
+  wrap.append(top, grass);
+  wrap.append(el("div","sub","The unicorn trots toward the deadline as time runs out. It started Aug 1, 2026."));
+
+  /* optional personal checklist (does not move the bar) */
+  const tasks = TASKS[s.id] || [];
+  if (tasks.length) {
+    const checks = loadChecks();
+    const state = checks[s.id] || [];
+    const cnt = el("div","prog-top");
+    const cl = el("span"), cp = el("span");
+    cnt.append(cl, cp);
+    const ul = el("ul","tasks");
+    const upd = () => { const n = tasks.filter((_,i)=>state[i]).length; cl.textContent = "My checklist: "+n+" of "+tasks.length+" steps done"; };
+    tasks.forEach((t,i)=>{
+      const li = el("li", state[i]?"done":"");
+      const lb = el("label"); const cb = document.createElement("input"); cb.type="checkbox"; cb.checked=!!state[i];
+      cb.addEventListener("change",()=>{ state[i]=cb.checked; const all=loadChecks(); all[s.id]=state; saveChecks(all); li.classList.toggle("done",cb.checked); upd(); });
+      lb.append(cb, el("span",null,t)); li.append(lb); ul.append(li);
+    });
+    upd();
+    wrap.append(cnt, ul);
+  }
   return wrap;
 }
 
