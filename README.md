@@ -95,3 +95,6 @@ Owner's rule for schools that have an agricultural campus: the pre-vet box focus
 
 ## Dragon centred (2026-10-09)
 The dragon is now vertically centred in the gate (`.dragon { margin:auto 0 }` in the flex column) instead of sitting at the bottom. The wrong-password message (`#gateMsg`) is pinned to the bottom of the screen, and the torches were moved down to match (`--ty:42vh`, 30vh on phones).
+
+## Dimmer torches, faint ambient light (2026-10-09)
+The torches were dimmed a lot (flame brightness .7, small glow, `.torchlight` alpha .2, lit wall brightness .62 with a weaker mask, dragon rim light .3) and the rest of the room is no longer pure black: the `#gate` background shows the stone wall at about 14% brightness (a .86 black overlay on the stone image). Tune the `.86` overlay for the room, `.torchlight` alphas for the glow, and `.rim` alphas for the dragon.
